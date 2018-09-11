@@ -63,7 +63,7 @@ public class ThemeHelper {
      * @param context context to get the preference
      */
     public static boolean isLightThemeSelected(Context context) {
-        return getSelectedThemeString(context).equals(context.getResources().getString(R.string.light_theme_key));
+        return true;
     }
 
 
@@ -96,7 +96,7 @@ public class ThemeHelper {
      */
     @StyleRes
     public static int getDialogTheme(Context context) {
-        return isLightThemeSelected(context) ? R.style.LightDialogTheme : R.style.DarkDialogTheme;
+        return R.style.LightDialogTheme;
     }
 
     /**

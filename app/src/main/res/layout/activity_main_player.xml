@@ -347,7 +347,7 @@
                     android:focusable="true"
                     android:padding="5dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_headset_white_24dp"
+                    android:src="@drawable/ic_headset_white2_24dp"
                     android:background="@drawable/rect_selector"
                     android:contentDescription="@string/switch_to_background"
                     tools:ignore="RtlHardcoded"/>
