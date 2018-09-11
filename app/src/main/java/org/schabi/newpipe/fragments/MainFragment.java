@@ -21,6 +21,9 @@ import android.view.ViewGroup;
 import org.schabi.newpipe.BaseFragment;
 import org.schabi.newpipe.R;
 import org.schabi.newpipe.extractor.exceptions.ExtractionException;
+import org.schabi.newpipe.fragments.list.kiosk.KioskFragment;
+import org.schabi.newpipe.local.bookmark.BookmarkFragment;
+import org.schabi.newpipe.local.subscription.SubscriptionFragment;
 import org.schabi.newpipe.report.ErrorActivity;
 import org.schabi.newpipe.report.UserAction;
 import org.schabi.newpipe.router.Router;
@@ -36,10 +39,7 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
     private ViewPager viewPager;
     private SelectedTabsPagerAdapter pagerAdapter;
 
-    private List<Tab> tabsList = new ArrayList<>();
-    private TabsManager tabsManager;
-
-    private boolean hasTabsChanged = false;
+    private List<Fragment> tabsList = new ArrayList<>();
 
     /*//////////////////////////////////////////////////////////////////////////
     // Fragment's LifeCycle
@@ -49,18 +49,6 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        tabsManager = TabsManager.getManager(activity);
-        tabsManager.setSavedTabsListener(() -> {
-            if (DEBUG) {
-                Log.d(TAG, "TabsManager.SavedTabsChangeListener: onTabsChanged called, isResumed = " + isResumed());
-            }
-            if (isResumed()) {
-                updateTabs();
-            } else {
-                hasTabsChanged = true;
-            }
-        });
     }
 
     @Override
@@ -97,7 +85,17 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
         pagerAdapter = new SelectedTabsPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(pagerAdapter);
 
-        updateTabs();
+        try {
+            tabsList.add(KioskFragment.getInstance(0, "Trending"));
+            tabsList.add(new SubscriptionFragment());
+            tabsList.add(new BookmarkFragment());
+            tabsList.add(new LocalVideoFragment());
+        } catch (ExtractionException e) {
+            e.printStackTrace();
+        }
+
+        pagerAdapter.notifyDataSetChanged();
+        viewPager.setOffscreenPageLimit(pagerAdapter.getCount());
     }
 
     @Override
@@ -110,17 +108,11 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
     @Override
     public void onResume() {
         super.onResume();
-
-        if (hasTabsChanged) {
-            hasTabsChanged = false;
-            updateTabs();
-        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        tabsManager.unsetSavedTabsListener();
     }
 
     /*//////////////////////////////////////////////////////////////////////////
@@ -160,24 +152,10 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
     // Tabs
     //////////////////////////////////////////////////////////////////////////*/
 
-    public void updateTabs() {
-        tabsList.clear();
-        tabsList.addAll(tabsManager.getTabs());
-        pagerAdapter.notifyDataSetChanged();
-
-        viewPager.setOffscreenPageLimit(pagerAdapter.getCount());
-
-        updateCurrentTitle();
-    }
-
-    private void updateCurrentTitle() {
-        setTitle(tabsList.get(viewPager.getCurrentItem()).getTabName(requireContext()));
-    }
 
     @Override
     public void onTabSelected(TabLayout.Tab selectedTab) {
         if (DEBUG) Log.d(TAG, "onTabSelected() called with: selectedTab = [" + selectedTab + "]");
-        updateCurrentTitle();
     }
 
     @Override
@@ -187,7 +165,6 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
         if (DEBUG) Log.d(TAG, "onTabReselected() called with: tab = [" + tab + "]");
-        updateCurrentTitle();
     }
 
     private class SelectedTabsPagerAdapter extends FragmentPagerAdapter {
@@ -197,27 +174,7 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
         @Override
         public Fragment getItem(int position) {
-            final Tab tab = tabsList.get(position);
-
-            Throwable throwable = null;
-            Fragment fragment = null;
-            try {
-                fragment = tab.getFragment();
-            } catch (ExtractionException e) {
-                throwable = e;
-            }
-
-            if (throwable != null) {
-                ErrorActivity.reportError(activity, throwable, activity.getClass(), null,
-                        ErrorActivity.ErrorInfo.make(UserAction.UI_ERROR, "none", "", R.string.app_ui_crash));
-                return new BlankFragment();
-            }
-
-            if (fragment instanceof BaseFragment) {
-                ((BaseFragment) fragment).useAsFrontPage(true);
-            }
-
-            return fragment;
+           return tabsList.get(position);
         }
 
         @Override

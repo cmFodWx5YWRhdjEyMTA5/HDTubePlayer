@@ -1,11 +1,13 @@
 package org.schabi.newpipe.util;
 
 import android.graphics.Bitmap;
+import android.support.v4.content.ContextCompat;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
+import org.schabi.newpipe.App;
 import org.schabi.newpipe.R;
 
 public class ImageDisplayConstants {
@@ -31,6 +33,7 @@ public class ImageDisplayConstants {
     public static final DisplayImageOptions DISPLAY_AVATAR_OPTIONS =
             new DisplayImageOptions.Builder()
                     .cloneFrom(BASE_DISPLAY_IMAGE_OPTIONS)
+                    .showImageOnLoading(R.drawable.buddy)
                     .showImageForEmptyUri(R.drawable.buddy)
                     .showImageOnFail(R.drawable.buddy)
                     .build();
@@ -38,8 +41,9 @@ public class ImageDisplayConstants {
     public static final DisplayImageOptions DISPLAY_THUMBNAIL_OPTIONS =
             new DisplayImageOptions.Builder()
                     .cloneFrom(BASE_DISPLAY_IMAGE_OPTIONS)
-                    .showImageForEmptyUri(R.drawable.default_dummy_thumbnail)
-                    .showImageOnFail(R.drawable.default_dummy_thumbnail)
+                    .showImageOnLoading(ContextCompat.getDrawable(App.sConetxt, R.drawable.default_dummy_thumbnail))
+                    .showImageForEmptyUri(ContextCompat.getDrawable(App.sConetxt, R.drawable.default_dummy_thumbnail))
+                    .showImageOnFail(ContextCompat.getDrawable(App.sConetxt, R.drawable.default_dummy_thumbnail))
                     .build();
 
     public static final DisplayImageOptions DISPLAY_BANNER_OPTIONS =
@@ -52,7 +56,8 @@ public class ImageDisplayConstants {
     public static final DisplayImageOptions DISPLAY_PLAYLIST_OPTIONS =
             new DisplayImageOptions.Builder()
                     .cloneFrom(BASE_DISPLAY_IMAGE_OPTIONS)
-                    .showImageForEmptyUri(R.drawable.default_dummy_thumbnail)
-                    .showImageOnFail(R.drawable.default_dummy_thumbnail)
+                    .showImageOnLoading(ContextCompat.getDrawable(App.sConetxt, R.drawable.default_dummy_thumbnail))
+                    .showImageForEmptyUri(ContextCompat.getDrawable(App.sConetxt, R.drawable.default_dummy_thumbnail))
+                    .showImageOnFail(ContextCompat.getDrawable(App.sConetxt, R.drawable.default_dummy_thumbnail))
                     .build();
 }

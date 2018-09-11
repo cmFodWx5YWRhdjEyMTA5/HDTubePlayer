@@ -164,6 +164,12 @@ public abstract class BaseListInfoFragment<I extends ListInfo>
     /*//////////////////////////////////////////////////////////////////////////
     // Contract
     //////////////////////////////////////////////////////////////////////////*/
+    protected void addInfoItem(I result) {
+        if (result.getRelatedItems().size() > 0) {
+            infoListAdapter.addInfoItemList(result.getRelatedItems());
+            showListFooter(hasMoreItems());
+        }
+    }
 
     @Override
     public void handleResult(@NonNull I result) {

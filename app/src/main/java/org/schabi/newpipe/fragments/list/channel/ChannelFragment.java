@@ -125,6 +125,12 @@ public class ChannelFragment extends BaseListInfoFragment<ChannelInfo> {
     }
 
     @Override
+    protected void initViews(View rootView, Bundle savedInstanceState) {
+        super.initViews(rootView, savedInstanceState);
+        infoListAdapter.setChannel(true);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (disposables != null) disposables.clear();

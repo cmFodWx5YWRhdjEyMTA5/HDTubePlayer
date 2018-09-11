@@ -7,4 +7,6 @@ package org.schabi.newpipe.fragments;
 public interface IMainActivity {
 
     void setSelectedItemId(int itemId);
+
+    void onHomeButtonPressed();
 }

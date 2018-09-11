@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,9 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.facebook.stetho.common.LogUtil;
+
+import org.schabi.newpipe.App;
 import org.schabi.newpipe.R;
 import org.schabi.newpipe.extractor.ListExtractor;
 import org.schabi.newpipe.extractor.NewPipe;
@@ -93,6 +98,23 @@ public class KioskFragment extends BaseListInfoFragment<KioskInfo> {
         name = kioskTranslatedName;
     }
 
+    private SwipeRefreshLayout mSwipeLayout;
+
+    @Override
+    protected void initViews(View rootView, Bundle savedInstanceState) {
+        super.initViews(rootView, savedInstanceState);
+        mSwipeLayout = rootView.findViewById(R.id.kiosk_swipeLayout);
+        mSwipeLayout.setOnRefreshListener(() ->
+                refreshData()
+        );
+        mSwipeLayout.setColorSchemeColors(ContextCompat.getColor(App.sConetxt, R.color.dark_youtube_primary_color));
+    }
+
+    private void refreshData() {
+        startLoading(true);
+        hideLoading();
+    }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -165,7 +187,17 @@ public class KioskFragment extends BaseListInfoFragment<KioskInfo> {
 
     @Override
     public void handleResult(@NonNull final KioskInfo result) {
-        super.handleResult(result);
+        Log.v(TAG, "handleResult>>>");
+        if (mSwipeLayout.isRefreshing()) {
+            mSwipeLayout.setRefreshing(false);
+        }
+
+        if (infoListAdapter.getItemsList().size() > 0) {
+            hideLoading();
+            addInfoItem(result);
+        } else {
+            super.handleResult(result);
+        }
 
         name = kioskTranslatedName;
         if(!useAsFrontPage) {

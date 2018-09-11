@@ -64,6 +64,8 @@ public class App extends Application {
     protected static final String TAG = App.class.toString();
     private RefWatcher refWatcher;
 
+    public static Context sConetxt;
+
     @SuppressWarnings("unchecked")
     private static final Class<? extends ReportSenderFactory>[] reportSenderFactoryClasses = new Class[]{AcraReportSenderFactory.class};
 
@@ -77,6 +79,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        sConetxt = this;
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.

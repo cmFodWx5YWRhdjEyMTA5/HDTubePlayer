@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.schabi.newpipe.BuildConfig;
 import org.schabi.newpipe.extractor.InfoItem;
 import org.schabi.newpipe.extractor.channel.ChannelInfoItem;
 import org.schabi.newpipe.extractor.playlist.PlaylistInfoItem;
@@ -45,7 +46,7 @@ import java.util.List;
 
 public class InfoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = InfoListAdapter.class.getSimpleName();
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = BuildConfig.DEBUG;
 
     private static final int HEADER_TYPE = 0;
     private static final int FOOTER_TYPE = 1;
@@ -63,6 +64,7 @@ public class InfoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private boolean showFooter = false;
     private View header = null;
     private View footer = null;
+    private boolean isChannel = false;
 
     public class HFHolder extends RecyclerView.ViewHolder {
         public View view;
@@ -71,6 +73,10 @@ public class InfoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(v);
             view = v;
         }
+    }
+
+    public void setChannel(boolean isChannel) {
+        this.isChannel = isChannel;
     }
 
     public InfoListAdapter(Activity a) {
@@ -219,7 +225,7 @@ public class InfoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int type) {
-        if (DEBUG) Log.d(TAG, "onCreateViewHolder() called with: parent = [" + parent + "], type = [" + type + "]");
+        if (DEBUG) Log.d(TAG, "onCreateViewHolder() called with: type = [" + type + "]");
         switch (type) {
             case HEADER_TYPE:
                 return new HFHolder(header);
@@ -228,7 +234,11 @@ public class InfoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case MINI_STREAM_HOLDER_TYPE:
                 return new StreamMiniInfoItemHolder(infoItemBuilder, parent);
             case STREAM_HOLDER_TYPE:
-                return new StreamInfoItemHolder(infoItemBuilder, parent);
+                if (isChannel) {
+                    return new StreamMiniInfoItemHolder(infoItemBuilder, parent);
+                } else {
+                    return new StreamInfoItemHolder(infoItemBuilder, parent);
+                }
             case MINI_CHANNEL_HOLDER_TYPE:
                 return new ChannelMiniInfoItemHolder(infoItemBuilder, parent);
             case CHANNEL_HOLDER_TYPE:

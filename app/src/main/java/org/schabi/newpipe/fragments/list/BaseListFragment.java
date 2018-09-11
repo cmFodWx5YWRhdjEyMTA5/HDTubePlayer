@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,12 +21,14 @@ import org.schabi.newpipe.extractor.channel.ChannelInfoItem;
 import org.schabi.newpipe.extractor.playlist.PlaylistInfoItem;
 import org.schabi.newpipe.extractor.stream.StreamInfoItem;
 import org.schabi.newpipe.fragments.BaseStateFragment;
+import org.schabi.newpipe.fragments.IMainActivity;
 import org.schabi.newpipe.fragments.OnScrollBelowItemsListener;
 import org.schabi.newpipe.local.dialog.PlaylistAppendDialog;
 import org.schabi.newpipe.info_list.InfoItemDialog;
 import org.schabi.newpipe.info_list.InfoListAdapter;
 import org.schabi.newpipe.player.playqueue.SinglePlayQueue;
 import org.schabi.newpipe.report.ErrorActivity;
+import org.schabi.newpipe.router.Router;
 import org.schabi.newpipe.util.NavigationHelper;
 import org.schabi.newpipe.util.OnClickGesture;
 import org.schabi.newpipe.util.StateSaver;
@@ -130,6 +133,21 @@ public abstract class BaseListFragment<I, N> extends BaseStateFragment<I> implem
         infoListAdapter.setHeader(getListHeader());
 
         itemsList.setAdapter(infoListAdapter);
+
+        View view = rootView.findViewById(R.id.toolbar);
+        if (view != null && view instanceof Toolbar) {
+            ((Toolbar)view).setNavigationOnClickListener(v ->
+                    homeButtonPressed()
+            );
+        }
+    }
+
+    private void homeButtonPressed() {
+        try {
+            Router.getInstance().getReceiver(IMainActivity.class).onHomeButtonPressed();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 
     protected void onItemSelected(InfoItem selectedItem) {
@@ -250,11 +268,6 @@ public abstract class BaseListFragment<I, N> extends BaseStateFragment<I> implem
         ActionBar supportActionBar = activity.getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayShowTitleEnabled(true);
-            if (useAsFrontPage) {
-                supportActionBar.setDisplayHomeAsUpEnabled(false);
-            } else {
-                supportActionBar.setDisplayHomeAsUpEnabled(true);
-            }
         }
     }
 

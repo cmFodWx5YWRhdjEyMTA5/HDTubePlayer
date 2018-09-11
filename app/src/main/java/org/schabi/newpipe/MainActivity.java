@@ -216,7 +216,8 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
      *         +--------------------------+
      * </pre>
      */
-    private void onHomeButtonPressed() {
+     @Override
+     public void onHomeButtonPressed() {
         // If search fragment wasn't found in the backstack...
         if (!NavigationHelper.tryGotoSearchFragment(getSupportFragmentManager())) {
             // ...go to the main fragment
