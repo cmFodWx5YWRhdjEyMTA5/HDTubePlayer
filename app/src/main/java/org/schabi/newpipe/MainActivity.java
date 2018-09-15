@@ -29,6 +29,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -99,7 +100,18 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                 return false;
             }
         });
+
+        appBarLayout = findViewById(R.id.toolbar_container);
     }
+
+    @Override
+    public void setToolbarExpanded() {
+        if (appBarLayout != null) {
+            appBarLayout.setExpanded(true, true);
+        }
+    }
+
+    private AppBarLayout appBarLayout;
 
     @Override
     public void setSelectedItemId(int position) {

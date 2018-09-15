@@ -9,4 +9,6 @@ public interface IMainActivity {
     void setSelectedItemId(int itemId);
 
     void onHomeButtonPressed();
+
+    void setToolbarExpanded();
 }

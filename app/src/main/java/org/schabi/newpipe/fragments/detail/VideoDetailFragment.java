@@ -18,6 +18,7 @@ import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -47,6 +48,7 @@ import com.nirhart.parallaxscroll.views.ParallaxScrollView;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.squareup.haha.trove.THash;
 
 import org.schabi.newpipe.R;
 import org.schabi.newpipe.ReCaptchaActivity;
@@ -64,8 +66,10 @@ import org.schabi.newpipe.extractor.stream.StreamType;
 import org.schabi.newpipe.extractor.stream.VideoStream;
 import org.schabi.newpipe.fragments.BackPressable;
 import org.schabi.newpipe.fragments.BaseStateFragment;
+import org.schabi.newpipe.fragments.IMainActivity;
 import org.schabi.newpipe.local.history.HistoryRecordManager;
 import org.schabi.newpipe.report.ErrorActivity;
+import org.schabi.newpipe.router.Router;
 import org.schabi.newpipe.util.StreamItemAdapter;
 import org.schabi.newpipe.util.StreamItemAdapter.StreamSizeWrapper;
 import org.schabi.newpipe.local.dialog.PlaylistAppendDialog;
@@ -506,7 +510,21 @@ public class VideoDetailFragment
 
         infoItemBuilder = new InfoItemBuilder(activity);
         setHeightThumbnail();
+
+        toolbar = rootView.findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Router.getInstance().getReceiver(IMainActivity.class).onHomeButtonPressed();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
+
+    private Toolbar toolbar;
 
     @Override
     protected void initListeners() {
@@ -605,7 +623,7 @@ public class VideoDetailFragment
             };
 
             imageLoader.displayImage(info.getThumbnailUrl(), thumbnailImageView,
-                    ImageDisplayConstants.DISPLAY_THUMBNAIL_OPTIONS, onFailListener);
+                    ImageDisplayConstants.VIDEO_DISPLAY_THUMBNAIL_OPTIONS, onFailListener);
         }
 
         if (!TextUtils.isEmpty(info.getUploaderAvatarUrl())) {
@@ -660,16 +678,17 @@ public class VideoDetailFragment
 
         // CAUTION set item properties programmatically otherwise it would not be accepted by
         // appcompat itemsinflater.inflate(R.menu.videoitem_detail, menu);
-
+        Log.v(TAG, "onCreateOptionsMenu video");
+        toolbar.getMenu().clear();
         inflater.inflate(R.menu.video_detail_menu, menu);
 
         updateMenuItemVisibility();
 
-        ActionBar supportActionBar = activity.getSupportActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
-            supportActionBar.setDisplayShowTitleEnabled(false);
-        }
+//        ActionBar supportActionBar = activity.getSupportActionBar();
+//        if (supportActionBar != null) {
+//            supportActionBar.setDisplayHomeAsUpEnabled(true);
+//            supportActionBar.setDisplayShowTitleEnabled(false);
+//        }
     }
 
     private void updateMenuItemVisibility() {

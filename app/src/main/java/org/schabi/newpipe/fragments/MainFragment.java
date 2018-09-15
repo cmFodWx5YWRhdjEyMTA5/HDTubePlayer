@@ -3,6 +3,7 @@ package org.schabi.newpipe.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -64,7 +65,7 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
     }
 
     @Override
-    protected void initViews(View rootView, Bundle savedInstanceState) {
+    protected void initViews(final View rootView, Bundle savedInstanceState) {
         super.initViews(rootView, savedInstanceState);
 
         Router.getInstance().register(this);
@@ -75,6 +76,7 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
             public void onPageSelected(int position) {
                 try {
                     Router.getInstance().getReceiver(IMainActivity.class).setSelectedItemId(position);
+                    Router.getInstance().getReceiver(IMainActivity.class).setToolbarExpanded();
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }

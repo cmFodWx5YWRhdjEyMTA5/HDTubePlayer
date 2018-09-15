@@ -45,6 +45,10 @@ public class ImageDisplayConstants {
                     .showImageForEmptyUri(ContextCompat.getDrawable(App.sConetxt, R.drawable.default_dummy_thumbnail))
                     .showImageOnFail(ContextCompat.getDrawable(App.sConetxt, R.drawable.default_dummy_thumbnail))
                     .build();
+    public static final DisplayImageOptions VIDEO_DISPLAY_THUMBNAIL_OPTIONS =
+            new DisplayImageOptions.Builder()
+                    .cloneFrom(BASE_DISPLAY_IMAGE_OPTIONS)
+                    .build();
 
     public static final DisplayImageOptions DISPLAY_BANNER_OPTIONS =
             new DisplayImageOptions.Builder()

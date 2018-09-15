@@ -174,7 +174,7 @@
                     android:layout_height="match_parent"
                     android:layout_below="@+id/detail_title_root_layout"
                     android:orientation="vertical"
-                    android:visibility="gone"
+                    android:visibility="invisible"
                     tools:visibility="visible">
 
                     <!--DETAIL-->
