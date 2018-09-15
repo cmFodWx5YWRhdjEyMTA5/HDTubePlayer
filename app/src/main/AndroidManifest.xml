@@ -72,6 +72,13 @@
             android:name="org.schabi.newpipe.settings.SettingsActivity"
             android:label="@string/settings"/>
 
+        <activity android:name="org.schabi.newpipe.fragments.LocalVideoActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:theme="@style/Translucent_theme"
+            />
+
         <activity
             android:name="org.schabi.newpipe.about.AboutActivity"
             android:label="@string/title_activity_about"/>

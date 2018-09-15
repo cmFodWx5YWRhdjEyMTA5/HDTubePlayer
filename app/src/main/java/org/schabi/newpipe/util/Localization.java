@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import org.schabi.newpipe.R;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -108,6 +109,12 @@ public class Localization {
         return df.format(datum);
     }
 
+    public static String ms2DateOnlyDay(long _ms){
+        Date date = new Date(_ms*1000);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        return format.format(date);
+    }
+
     public static String localizeDate(Context context, String date) {
         Resources res = context.getResources();
         String dateString = res.getString(R.string.upload_date_text);
@@ -178,5 +185,41 @@ public class Localization {
             output = String.format(Locale.US, "%d:%02d", minutes, seconds);
         }
         return output;
+    }
+
+    public static String timeParse(long duration) {
+        String time = "";
+        long minute = duration / 60000;
+        long seconds = duration % 60000;
+        long second = Math.round((float) seconds / 1000);
+        if (minute < 10) {
+            time += "0";
+        }
+        time += minute + ":";
+        if (second < 10) {
+            time += "0";
+        }
+        time += second;
+        return time;
+    }
+
+
+    public static String FormetFileSize(long fileS) {
+        DecimalFormat df = new DecimalFormat("#.00");
+        String fileSizeString = "";
+        String wrongSize = "0B";
+        if (fileS == 0) {
+            return wrongSize;
+        }
+        if (fileS < 1024) {
+            fileSizeString = df.format((double) fileS) + "B";
+        } else if (fileS < 1048576) {
+            fileSizeString = df.format((double) fileS / 1024) + "KB";
+        } else if (fileS < 1073741824) {
+            fileSizeString = df.format((double) fileS / 1048576) + "MB";
+        } else {
+            fileSizeString = df.format((double) fileS / 1073741824) + "GB";
+        }
+        return fileSizeString;
     }
 }

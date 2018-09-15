@@ -77,6 +77,10 @@
         <item name="colorControlNormal">#757575</item>
     </style>
 
+    <style name="Translucent_theme" parent="@style/DarkTheme">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
     <style name="DarkTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/dark_background_color</item>
         <item name="colorPrimaryDark">@color/dark_background_color</item>
@@ -115,7 +119,7 @@
         <item name="ic_bookmark">@drawable/ic_bookmark_white_24dp</item>
         <item name="ic_playlist_add">@drawable/ic_playlist_add_white_24dp</item>
         <item name="ic_playlist_check">@drawable/ic_playlist_add_check_white_24dp</item>
-        <item name="ic_import_export">@drawable/ic_import_export_white_24dp</item>
+        <item name="ic_import_export">@drawable/ic_import_export_black_24dp</item>
         <item name="ic_save">@drawable/ic_save_white_24dp</item>
         <item name="ic_backup">@drawable/ic_backup_white_24dp</item>
         <item name="ic_add">@drawable/ic_add_white_24dp</item>

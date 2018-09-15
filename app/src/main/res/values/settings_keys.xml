@@ -3,7 +3,6 @@
     <!-- Service -->
     <string-array name="service_list" translatable="false">
         <item>@string/youtube</item>
-        <item>@string/soundcloud</item>
     </string-array>
     <string name="current_service_key" translatable="false">service</string>
     <string name="default_service_value" translatable="false">@string/youtube</string>

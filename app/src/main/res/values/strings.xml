@@ -518,4 +518,8 @@
     <string name="minimize_on_exit_background_description">Minimize to background player</string>
     <string name="minimize_on_exit_popup_description">Minimize to popup player</string>
 
+    <string name="tube_my_video">My Video</string>
+    <string name="tube_add_youtube">Import YouTube playlists</string>
+    <string name="video_count">%d videos</string>
+
 </resources>
