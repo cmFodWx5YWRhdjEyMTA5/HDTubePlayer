@@ -83,6 +83,8 @@ public class LocalVideoFragment extends Fragment implements LoaderManager.Loader
             if (cursor != null) {
                 return cursor.getCount();
             }
+        } catch (Throwable e){
+            e.printStackTrace();
         } finally {
             if (cursor != null) {
                 cursor.close();

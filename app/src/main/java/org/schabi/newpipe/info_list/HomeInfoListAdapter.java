@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -75,8 +76,11 @@ public class HomeInfoListAdapter extends InfoListAdapter {
 
             final StreamInfoItem item = (StreamInfoItem) infoItem;
 
-            ImageLoader.getInstance().displayImage(item.getThumbnailUrl(), ((HomeStreamHolder) holder)
-                    .controller.getThumb(), ImageDisplayConstants.DISPLAY_THUMBNAIL_OPTIONS);
+            ImageView thumbIV = ((HomeStreamHolder) holder)
+                    .controller.getThumb();
+            thumbIV.setImageResource(R.drawable.default_dummy_thumbnail);
+            ImageLoader.getInstance().displayImage(item.getThumbnailUrl(), thumbIV,
+                    ImageDisplayConstants.DISPLAY_THUMBNAIL_OPTIONS);
 
             final HomeStreamHolder homeStreamHolder = (HomeStreamHolder) holder;
             homeStreamHolder.ijkVideoView.setPlayerConfig(homeStreamHolder.mPlayerConfig);
@@ -92,10 +96,13 @@ public class HomeInfoListAdapter extends InfoListAdapter {
 
             homeStreamHolder.ijkVideoView.setPlayLogicEventCallBack(new PlayLogicEventCallBack() {
                 @Override
-                public String handleGetPlayUrl() {
-                    String playurl = ACache.get(App.sConetxt).getAsString(item.getUrl());
-                    if (!TextUtils.isEmpty(playurl)) {
-                        return playurl;
+                public String handleGetPlayUrl(boolean forceload) {
+                    if (!forceload) {
+                        String playurl = ACache.get(App.sConetxt).getAsString(item.getUrl());
+                        Log.v("home", " handleGetPlayUrl playurl " + playurl);
+                        if (!TextUtils.isEmpty(playurl)) {
+                            return playurl;
+                        }
                     }
 
                     StreamMetaData streamMetaData = new ParseStreamMetaData(item.getUrl()).getStreamMetaDataList()
@@ -104,6 +111,7 @@ public class HomeInfoListAdapter extends InfoListAdapter {
                         ACache.get(App.sConetxt).put(item.getUrl(), streamMetaData.getUri().toString(),
                                 60 * 5);
                     }
+                    Log.v("home", " handleGetPlayUrl playurl22 " + streamMetaData.getUri().toString());
                     return streamMetaData.getUri().toString();
                 }
             });
@@ -111,6 +119,8 @@ public class HomeInfoListAdapter extends InfoListAdapter {
             homeStreamHolder.title.setText(item.getName());
         }
     }
+
+    private ExoMediaPlayer player = new ExoMediaPlayer(App.sConetxt);
 
     public class HomeStreamHolder extends RecyclerView.ViewHolder {
 
@@ -128,7 +138,7 @@ public class HomeInfoListAdapter extends InfoListAdapter {
             title = itemView.findViewById(R.id.tv_title);
             mPlayerConfig = new PlayerConfig.Builder()
                     .enableCache()
-                    .setCustomMediaPlayer(new ExoMediaPlayer(mContext))
+                    .setCustomMediaPlayer(player)
                     .autoRotate()
                     .addToPlayerManager()//required
                     .build();

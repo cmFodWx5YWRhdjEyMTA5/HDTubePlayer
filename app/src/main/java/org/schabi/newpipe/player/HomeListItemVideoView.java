@@ -1,14 +1,17 @@
 package org.schabi.newpipe.player;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import com.dueeeke.videoplayer.player.IjkVideoView;
+import com.facebook.stetho.common.LogUtil;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,32 +37,53 @@ public class HomeListItemVideoView extends IjkVideoView{
     }
 
     private static final ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
-    private static final Handler mainHandler = new Handler(Looper.getMainLooper());
+
+    private AsyncTask loadAsyncTask;
+
+    private void stopPlayLogicEvent() {
+        Log.v("HomeListItemVideoView", "stopPlayLogicEvent " + loadAsyncTask);
+        if (loadAsyncTask != null) {
+            loadAsyncTask.cancel(true);
+            loadAsyncTask = null;
+        }
+    }
+
+    @Override
+    public void stopPlayback() {
+        stopPlayLogicEvent();
+        super.stopPlayback();
+    }
 
     @Override
     protected void startPrepare(boolean needReset) {
-        if (TextUtils.isEmpty(mCurrentUrl)) {
+        LogUtil.v("HomeListItemVideoView", "startPrepare>> " + needReset);
+        if (TextUtils.isEmpty(mCurrentUrl) || needReset) {
             if (mCallBack != null) {
-                singleThreadExecutor.execute(new Runnable() {
+
+                if (loadAsyncTask != null) {
+                    loadAsyncTask.cancel(true);
+                    loadAsyncTask = null;
+                }
+
+                loadAsyncTask = new AsyncTask<Void, Void, String>(){
                     @Override
-                    public void run() {
-                        mainHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                setPlayState(STATE_PREPARING);
-                            }
-                        });
-
-                        mCurrentUrl = mCallBack.handleGetPlayUrl();
-
-                        mainHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                HomeListItemVideoView.super.startPrepare(needReset);
-                            }
-                        });
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+                        setPlayState(STATE_PREPARING);
                     }
-                });
+
+                    @Override
+                    protected String doInBackground(Void... voids) {
+                        return mCallBack.handleGetPlayUrl(needReset);
+                    }
+
+                    @Override
+                    protected void onPostExecute(String url) {
+                        super.onPostExecute(url);
+                        mCurrentUrl = url;
+                        HomeListItemVideoView.super.startPrepare(needReset);
+                    }
+                }.executeOnExecutor(singleThreadExecutor);
             }
         } else {
             super.startPrepare(needReset);

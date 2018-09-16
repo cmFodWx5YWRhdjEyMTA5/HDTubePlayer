@@ -52,7 +52,6 @@ public class ParseStreamMetaData {
 	 * @param videoId	The ID of the video we are going to get its streams.
 	 */
 	public ParseStreamMetaData(String videoId) {
-		NewPipe.init(new HttpDownloader());
 		setYoutubeVideoUrl(videoId);
 	}
 

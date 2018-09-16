@@ -44,6 +44,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dueeeke.videoplayer.player.VideoViewManager;
 import com.nirhart.parallaxscroll.views.ParallaxScrollView;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -209,6 +210,8 @@ public class VideoDetailFragment
                 .getBoolean(getString(R.string.show_next_video_key), true);
         PreferenceManager.getDefaultSharedPreferences(activity)
                 .registerOnSharedPreferenceChangeListener(this);
+
+        VideoViewManager.instance().stopPlayback();
     }
 
     @Override

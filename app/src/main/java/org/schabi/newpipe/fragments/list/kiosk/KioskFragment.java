@@ -34,6 +34,7 @@ import org.schabi.newpipe.extractor.linkhandler.LinkHandlerFactory;
 import org.schabi.newpipe.fragments.list.BaseListInfoFragment;
 import org.schabi.newpipe.info_list.HomeInfoListAdapter;
 import org.schabi.newpipe.info_list.InfoListAdapter;
+import org.schabi.newpipe.player.HomeListItemVideoView;
 import org.schabi.newpipe.report.UserAction;
 import org.schabi.newpipe.util.ExtractorHelper;
 import org.schabi.newpipe.util.KioskTranslator;
@@ -125,7 +126,7 @@ public class KioskFragment extends BaseListInfoFragment<KioskInfo> {
 
             @Override
             public void onChildViewDetachedFromWindow(View view) {
-                IjkVideoView ijkVideoView = view.findViewById(R.id.video_player);
+                HomeListItemVideoView ijkVideoView = view.findViewById(R.id.video_player);
                 if (ijkVideoView != null && !ijkVideoView.isFullScreen()) {
                     ijkVideoView.stopPlayback();
                 }
@@ -229,7 +230,6 @@ public class KioskFragment extends BaseListInfoFragment<KioskInfo> {
         if (infoListAdapter.getItemsList().size() > 0) {
             infoListAdapter.getItemsList().clear();
             hideLoading();
-//            Collections.shuffle(result.getRelatedItems());
             addInfoItem(result);
             Log.v(TAG, "handleResult getItemsList().size()>>>");
         } else {

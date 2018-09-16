@@ -195,11 +195,18 @@ public abstract class BaseIjkVideoView extends FrameLayout implements MediaPlaye
             if (mCacheServer.isCached(mCurrentUrl)) {
                 bufferPercentage = 100;
             }
-            mMediaPlayer.setDataSource(proxyPath, mHeaders);
+            if (mMediaPlayer != null) {
+                mMediaPlayer.setDataSource(proxyPath, mHeaders);
+            }
+
         } else {
-            mMediaPlayer.setDataSource(mCurrentUrl, mHeaders);
+            if (mMediaPlayer != null) {
+                mMediaPlayer.setDataSource(mCurrentUrl, mHeaders);
+            }
         }
-        mMediaPlayer.prepareAsync();
+        if (mMediaPlayer != null) {
+            mMediaPlayer.prepareAsync();
+        }
         setPlayState(STATE_PREPARING);
         setPlayerState(isFullScreen() ? PLAYER_FULL_SCREEN : PLAYER_NORMAL);
     }

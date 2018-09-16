@@ -6,6 +6,6 @@ package org.schabi.newpipe.player;
 
 public interface PlayLogicEventCallBack {
 
-    String handleGetPlayUrl();
+    String handleGetPlayUrl(boolean forceload);
 }
 
