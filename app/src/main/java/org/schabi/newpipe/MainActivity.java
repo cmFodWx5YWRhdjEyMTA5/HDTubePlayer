@@ -183,7 +183,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
 
 
         if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-            finish();
+            if (!VideoViewManager.instance().onBackPressed()) {
+                finish();
+            }
         } else if (!VideoViewManager.instance().onBackPressed()) {
             super.onBackPressed();
         }

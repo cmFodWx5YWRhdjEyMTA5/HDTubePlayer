@@ -180,12 +180,21 @@ public abstract class BaseIjkVideoView extends FrameLayout implements MediaPlaye
 
     protected abstract void setPlayerState(int playerState);
 
+    protected void addDisplay() {
+
+    }
     /**
      * 开始准备播放（直接播放）
      */
     protected void startPrepare(boolean needReset) {
         if (TextUtils.isEmpty(mCurrentUrl) && mAssetFileDescriptor == null) return;
-        if (needReset) mMediaPlayer.reset();
+        if (needReset) {
+            mMediaPlayer.reset();
+            if (!(mMediaPlayer instanceof IjkPlayer)) {
+                mMediaPlayer.bindVideoView(this);
+                addDisplay();
+            }
+        }
         if (mAssetFileDescriptor != null) {
             mMediaPlayer.setDataSource(mAssetFileDescriptor);
         } else if (mPlayerConfig.isCache && !mCurrentUrl.startsWith("file://")) {

@@ -3,6 +3,7 @@ package org.schabi.newpipe.player;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
+import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
@@ -173,7 +174,7 @@ public class ExoMediaPlayer extends AbstractPlayer implements VideoListener {
 
     @Override
     public void reset() {
-        LogUtil.v("EXO", "reset>>>");
+        Log.v("EXO", "reset>>>");
         release();
         initPlayer();
     }

@@ -56,35 +56,39 @@ public class HomeListItemVideoView extends IjkVideoView{
 
     @Override
     protected void startPrepare(boolean needReset) {
-        LogUtil.v("HomeListItemVideoView", "startPrepare>> " + needReset);
-        if (TextUtils.isEmpty(mCurrentUrl) || needReset) {
-            if (mCallBack != null) {
+        Log.v("HomeListItemVideoView", "startPrepare>> " + needReset + " mCallBack "+ mCallBack);
+        if (mCallBack != null) {
+            if (loadAsyncTask != null) {
+                loadAsyncTask.cancel(true);
+                loadAsyncTask = null;
+            }
 
-                if (loadAsyncTask != null) {
-                    loadAsyncTask.cancel(true);
-                    loadAsyncTask = null;
+            loadAsyncTask = new AsyncTask<Void, Void, String>() {
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                    setPlayState(STATE_PREPARING);
                 }
 
-                loadAsyncTask = new AsyncTask<Void, Void, String>(){
-                    @Override
-                    protected void onPreExecute() {
-                        super.onPreExecute();
-                        setPlayState(STATE_PREPARING);
-                    }
+                @Override
+                protected String doInBackground(Void... voids) {
+                    return mCallBack.handleGetPlayUrl(false);
+                }
 
-                    @Override
-                    protected String doInBackground(Void... voids) {
-                        return mCallBack.handleGetPlayUrl(needReset);
-                    }
+                @Override
+                protected void onCancelled() {
+                    super.onCancelled();
+                    setPlayState(STATE_IDLE);
+                }
 
-                    @Override
-                    protected void onPostExecute(String url) {
-                        super.onPostExecute(url);
-                        mCurrentUrl = url;
-                        HomeListItemVideoView.super.startPrepare(needReset);
-                    }
-                }.executeOnExecutor(singleThreadExecutor);
-            }
+                @Override
+                protected void onPostExecute(String url) {
+                    super.onPostExecute(url);
+                    mCurrentUrl = url;
+                    Log.v("HomeListItemVideoView", "super startPrepare " + needReset);
+                    HomeListItemVideoView.super.startPrepare(needReset);
+                }
+            }.executeOnExecutor(singleThreadExecutor);
         } else {
             super.startPrepare(needReset);
         }

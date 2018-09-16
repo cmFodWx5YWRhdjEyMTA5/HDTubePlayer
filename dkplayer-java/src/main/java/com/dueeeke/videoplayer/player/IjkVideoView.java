@@ -280,8 +280,13 @@ public class IjkVideoView extends BaseIjkVideoView {
      */
     @Override
     public void retry() {
-        addDisplay();
-        startPrepare(true);
+        if (mMediaPlayer instanceof IjkPlayer) {
+            addDisplay();
+            startPrepare(true);
+        } else {
+            startPrepare(true);
+        }
+
     }
 
     @Override

@@ -233,12 +233,12 @@ public class StandardVideoController extends GestureVideoController implements V
                 startPlayButton.setVisibility(View.GONE);
                 loadingProgress.setVisibility(View.VISIBLE);
                 durationTV.setVisibility(View.GONE);
-//                thumb.setVisibility(View.VISIBLE);
+                thumb.setVisibility(View.GONE);
                 break;
             case IjkVideoView.STATE_PREPARED:
                 L.e("STATE_PREPARED");
                 if (!isLive) bottomProgress.setVisibility(View.VISIBLE);
-//                loadingProgress.setVisibility(GONE);
+                loadingProgress.setVisibility(GONE);
                 startPlayButton.setVisibility(View.GONE);
                 durationTV.setVisibility(View.GONE);
                 break;
@@ -274,9 +274,10 @@ public class StandardVideoController extends GestureVideoController implements V
                 completeContainer.setVisibility(View.VISIBLE);
                 bottomProgress.setProgress(0);
                 bottomProgress.setSecondaryProgress(0);
+                loadingProgress.setVisibility(View.GONE);
                 isLocked = false;
                 mediaPlayer.setLock(false);
-                durationTV.setVisibility(View.VISIBLE);
+                durationTV.setVisibility(View.GONE);
                 break;
         }
     }

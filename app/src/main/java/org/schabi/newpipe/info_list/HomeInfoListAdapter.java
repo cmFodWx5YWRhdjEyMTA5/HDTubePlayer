@@ -90,6 +90,7 @@ public class HomeInfoListAdapter extends InfoListAdapter {
                 homeStreamHolder.controller.setDuration(Localization.getDurationString(item.getDuration()));
             } else if (item.getStreamType() == StreamType.LIVE_STREAM) {
                 homeStreamHolder.controller.setDuration(mContext.getString(R.string.duration_live));
+                homeStreamHolder.controller.setLive();
             } else {
                 homeStreamHolder.controller.setDuration("");
             }
