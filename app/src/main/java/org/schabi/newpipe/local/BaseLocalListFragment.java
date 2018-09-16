@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,7 +13,9 @@ import android.view.View;
 
 import org.schabi.newpipe.R;
 import org.schabi.newpipe.fragments.BaseStateFragment;
+import org.schabi.newpipe.fragments.IMainActivity;
 import org.schabi.newpipe.fragments.list.ListViewContract;
+import org.schabi.newpipe.router.Router;
 
 import static org.schabi.newpipe.util.AnimationUtils.animateView;
 
@@ -75,6 +78,21 @@ public abstract class BaseLocalListFragment<I, N> extends BaseStateFragment<I>
         itemListAdapter.setFooter(footerRootView = getListFooter());
 
         itemsList.setAdapter(itemListAdapter);
+
+        View view = rootView.findViewById(R.id.toolbar);
+        if (view != null && view instanceof Toolbar) {
+            ((Toolbar)view).setNavigationOnClickListener(v ->
+                    homeButtonPressed()
+            );
+        }
+    }
+
+    private void homeButtonPressed() {
+        try {
+            Router.getInstance().getReceiver(IMainActivity.class).onHomeButtonPressed();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
