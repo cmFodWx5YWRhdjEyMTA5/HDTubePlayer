@@ -99,6 +99,11 @@
         </activity>
 
         <activity
+            android:name="org.schabi.newpipe.player.FullScreenActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name="org.schabi.newpipe.ExitActivity"
             android:label="@string/general_error"
             android:theme="@android:style/Theme.NoDisplay"/>

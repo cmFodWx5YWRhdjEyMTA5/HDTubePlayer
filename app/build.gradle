@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "org.schabi.newpipe"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 27
         versionCode 68
         versionName "0.14.1"
@@ -101,4 +101,7 @@ dependencies {
     implementation 'com.android.support:cardview-v7:27.1.1'
 
     implementation 'com.zhy:base-rvadapter:3.0.3'
+
+    implementation 'com.github.dueeeke.dkplayer:dkplayer-java:2.5.3'
+    implementation 'com.github.dueeeke.dkplayer:dkplayer-ui:2.5.3'
 }

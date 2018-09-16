@@ -48,3 +48,8 @@
     private void writeObject(java.io.ObjectOutputStream);
     private void readObject(java.io.ObjectInputStream);
 }
+
+-keep class tv.danmaku.ijk.** { *; }
+-dontwarn tv.danmaku.ijk.**
+-keep class com.dueeeke.videoplayer.** { *; }
+-dontwarn com.dueeeke.videoplayer.**

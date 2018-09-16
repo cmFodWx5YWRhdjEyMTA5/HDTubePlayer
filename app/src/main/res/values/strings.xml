@@ -521,5 +521,23 @@
     <string name="tube_my_video">My Video</string>
     <string name="tube_add_youtube">Import YouTube playlists</string>
     <string name="video_count">%d videos</string>
+    <string name="replay">play back</string>
+
+    <string name="error_message">A little bit of a problem, try again later</string>
+    <string name="continue_play">Continue playing</string>
+    <string name="wifi_tip">You are using mobile network, continue playing will consume traffic</string>
+    <string name="lock_tip">Please unlock the screen first!</string>
+    <string name="unlocked">Unlocked</string>
+    <string name="locked">locked</string>
+
+    <string name="dkplayer_lock_tip">Please unlock the screen first！</string>
+    <string name="dkplayer_locked">locked</string>
+    <string name="dkplayer_replay">play back</string>
+    <string name="dkplayer_unlocked">Unlocked</string>
+
+    <string name="dkplayer_continue_play">Continue playing</string>
+    <string name="dkplayer_error_message">A little bit of a problem, try again later</string>
+    <string name="dkplayer_retry">retry</string>
+    <string name="dkplayer_wifi_tip">You are using mobile network, continue playing will consume traffic</string>
 
 </resources>

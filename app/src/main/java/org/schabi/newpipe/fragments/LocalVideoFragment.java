@@ -15,6 +15,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.schabi.newpipe.App;
 import org.schabi.newpipe.R;
+import org.schabi.newpipe.player.FullScreenActivity;
 import org.schabi.newpipe.util.ImageDisplayConstants;
 import org.schabi.newpipe.util.Localization;
 
@@ -112,7 +114,7 @@ public class LocalVideoFragment extends Fragment implements LoaderManager.Loader
         }
 
         @Override
-        public void bindView(View view, Context context, Cursor cursor) {
+        public void bindView(View view, Context context, final Cursor cursor) {
             ImageView thumbnailIV = view.findViewById(R.id.itemThumbnailView);
             String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Thumbnails.DATA));
             Uri uri = Uri.fromFile(new File(path));
@@ -134,6 +136,16 @@ public class LocalVideoFragment extends Fragment implements LoaderManager.Loader
             TextView dateTV = view.findViewById(R.id.itemAdditionalDetails);
             long time = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED));
             dateTV.setText(Localization.ms2DateOnlyDay(time));
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
+                    String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME));
+                    LogUtil.v("localvideo", "path:: " + path);
+                    FullScreenActivity.launch(App.sConetxt, path, name);
+                }
+            });
         }
     }
 }
