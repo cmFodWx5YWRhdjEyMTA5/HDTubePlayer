@@ -539,5 +539,6 @@
     <string name="dkplayer_error_message">A little bit of a problem, try again later</string>
     <string name="dkplayer_retry">retry</string>
     <string name="dkplayer_wifi_tip">You are using mobile network, continue playing will consume traffic</string>
+    <string name="error_video_streams">An error has occurred while retrieving video\'s streams.</string>
 
 </resources>

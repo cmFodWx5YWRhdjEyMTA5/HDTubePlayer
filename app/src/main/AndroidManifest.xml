@@ -21,6 +21,8 @@
         <activity
             android:name="org.schabi.newpipe.MainActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -99,7 +101,7 @@
         </activity>
 
         <activity
-            android:name="org.schabi.newpipe.player.FullScreenActivity"
+            android:name="org.schabi.newpipe.player.LocalVideoPlayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
 

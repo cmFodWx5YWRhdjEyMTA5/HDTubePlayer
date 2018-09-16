@@ -13,6 +13,8 @@ import org.schabi.newpipe.extractor.linkhandler.ListLinkHandler;
 import org.schabi.newpipe.extractor.linkhandler.LinkHandler;
 import org.schabi.newpipe.util.Constants;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Queue;
 
 import icepick.State;
@@ -166,7 +168,9 @@ public abstract class BaseListInfoFragment<I extends ListInfo>
     //////////////////////////////////////////////////////////////////////////*/
     protected void addInfoItem(I result) {
         if (result.getRelatedItems().size() > 0) {
-            infoListAdapter.addInfoItemList(result.getRelatedItems());
+            ArrayList list = new ArrayList<>(result.getRelatedItems());
+            Collections.shuffle(list);
+            infoListAdapter.addInfoItemList2(list);
             showListFooter(hasMoreItems());
         }
     }

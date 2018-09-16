@@ -7,13 +7,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.dueeeke.videoplayer.player.IjkVideoView;
+import com.dueeeke.videoplayer.player.VideoViewManager;
 import com.facebook.stetho.common.LogUtil;
 
 import org.schabi.newpipe.App;
@@ -27,9 +32,13 @@ import org.schabi.newpipe.extractor.linkhandler.ListLinkHandlerFactory;
 import org.schabi.newpipe.extractor.linkhandler.ListLinkHandler;
 import org.schabi.newpipe.extractor.linkhandler.LinkHandlerFactory;
 import org.schabi.newpipe.fragments.list.BaseListInfoFragment;
+import org.schabi.newpipe.info_list.HomeInfoListAdapter;
+import org.schabi.newpipe.info_list.InfoListAdapter;
 import org.schabi.newpipe.report.UserAction;
 import org.schabi.newpipe.util.ExtractorHelper;
 import org.schabi.newpipe.util.KioskTranslator;
+
+import java.util.Collections;
 
 import icepick.State;
 import io.reactivex.Single;
@@ -108,6 +117,31 @@ public class KioskFragment extends BaseListInfoFragment<KioskInfo> {
                 refreshData()
         );
         mSwipeLayout.setColorSchemeColors(ContextCompat.getColor(App.sConetxt, R.color.dark_youtube_primary_color));
+        itemsList.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
+            @Override
+            public void onChildViewAttachedToWindow(View view) {
+
+            }
+
+            @Override
+            public void onChildViewDetachedFromWindow(View view) {
+                IjkVideoView ijkVideoView = view.findViewById(R.id.video_player);
+                if (ijkVideoView != null && !ijkVideoView.isFullScreen()) {
+                    ijkVideoView.stopPlayback();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        VideoViewManager.instance().releaseVideoPlayer();
+    }
+
+    @Override
+    public InfoListAdapter createListAdpapter() {
+        return new HomeInfoListAdapter(activity);
     }
 
     private void refreshData() {
@@ -193,8 +227,11 @@ public class KioskFragment extends BaseListInfoFragment<KioskInfo> {
         }
 
         if (infoListAdapter.getItemsList().size() > 0) {
+            infoListAdapter.getItemsList().clear();
             hideLoading();
+//            Collections.shuffle(result.getRelatedItems());
             addInfoItem(result);
+            Log.v(TAG, "handleResult getItemsList().size()>>>");
         } else {
             super.handleResult(result);
         }

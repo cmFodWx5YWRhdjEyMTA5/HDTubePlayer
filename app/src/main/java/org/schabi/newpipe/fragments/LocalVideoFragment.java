@@ -15,7 +15,6 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,7 +24,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.schabi.newpipe.App;
 import org.schabi.newpipe.R;
-import org.schabi.newpipe.player.FullScreenActivity;
+import org.schabi.newpipe.player.LocalVideoPlayerActivity;
 import org.schabi.newpipe.util.ImageDisplayConstants;
 import org.schabi.newpipe.util.Localization;
 
@@ -126,7 +125,7 @@ public class LocalVideoFragment extends Fragment implements LoaderManager.Loader
             durationTV.setText(Localization.timeParse(duraton));
 
             TextView titleTV = view.findViewById(R.id.itemVideoTitleView);
-            String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME));
+            final String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME));
             titleTV.setText(name);
 
             TextView sizeTV = view.findViewById(R.id.itemUploaderView);
@@ -137,13 +136,12 @@ public class LocalVideoFragment extends Fragment implements LoaderManager.Loader
             long time = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED));
             dateTV.setText(Localization.ms2DateOnlyDay(time));
 
+            final String filePath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
-                    String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME));
-                    LogUtil.v("localvideo", "path:: " + path);
-                    FullScreenActivity.launch(App.sConetxt, path, name);
+                    LogUtil.v("localvideo", "path:: " + filePath);
+                    LocalVideoPlayerActivity.launch(App.sConetxt, path, name);
                 }
             });
         }

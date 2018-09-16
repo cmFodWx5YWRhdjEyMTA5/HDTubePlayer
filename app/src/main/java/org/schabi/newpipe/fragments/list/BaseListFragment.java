@@ -55,7 +55,16 @@ public abstract class BaseListFragment<I, N> extends BaseStateFragment<I> implem
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        infoListAdapter = new InfoListAdapter(activity);
+        InfoListAdapter adapter = createListAdpapter();
+        if (adapter != null) {
+            infoListAdapter = adapter;
+        } else {
+            infoListAdapter = new InfoListAdapter(activity);
+        }
+    }
+
+    public InfoListAdapter createListAdpapter() {
+        return null;
     }
 
     @Override

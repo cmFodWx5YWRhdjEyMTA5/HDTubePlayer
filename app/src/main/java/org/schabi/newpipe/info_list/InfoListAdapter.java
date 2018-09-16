@@ -48,22 +48,22 @@ public class InfoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final String TAG = InfoListAdapter.class.getSimpleName();
     private static final boolean DEBUG = BuildConfig.DEBUG;
 
-    private static final int HEADER_TYPE = 0;
-    private static final int FOOTER_TYPE = 1;
+    protected static final int HEADER_TYPE = 0;
+    protected static final int FOOTER_TYPE = 1;
 
     private static final int MINI_STREAM_HOLDER_TYPE = 0x100;
-    private static final int STREAM_HOLDER_TYPE = 0x101;
+    protected static final int STREAM_HOLDER_TYPE = 0x101;
     private static final int MINI_CHANNEL_HOLDER_TYPE = 0x200;
     private static final int CHANNEL_HOLDER_TYPE = 0x201;
     private static final int MINI_PLAYLIST_HOLDER_TYPE = 0x300;
     private static final int PLAYLIST_HOLDER_TYPE = 0x301;
 
     private final InfoItemBuilder infoItemBuilder;
-    private final ArrayList<InfoItem> infoItemList;
+    protected final ArrayList<InfoItem> infoItemList;
     private boolean useMiniVariant = false;
-    private boolean showFooter = false;
-    private View header = null;
-    private View footer = null;
+    protected boolean showFooter = false;
+    protected View header = null;
+    protected View footer = null;
     private boolean isChannel = false;
 
     public class HFHolder extends RecyclerView.ViewHolder {
@@ -98,6 +98,11 @@ public class InfoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void useMiniItemVariants(boolean useMiniVariant) {
         this.useMiniVariant = useMiniVariant;
+    }
+
+    public void addInfoItemList2(List<InfoItem> data) {
+        infoItemList.addAll(data);
+        notifyDataSetChanged();
     }
 
     public void addInfoItemList(List<InfoItem> data) {
@@ -175,7 +180,7 @@ public class InfoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
 
-    private int sizeConsideringHeaderOffset() {
+    protected int sizeConsideringHeaderOffset() {
         int i = infoItemList.size() + (header != null ? 1 : 0);
         if (DEBUG) Log.d(TAG, "sizeConsideringHeaderOffset() called → " + i);
         return i;

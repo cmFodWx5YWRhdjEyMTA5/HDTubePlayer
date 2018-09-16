@@ -40,6 +40,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.dueeeke.videoplayer.player.VideoViewManager;
+
 import org.schabi.newpipe.extractor.StreamingService;
 import org.schabi.newpipe.fragments.BackPressable;
 import org.schabi.newpipe.fragments.IMainActivity;
@@ -181,7 +184,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
 
         if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finish();
-        } else super.onBackPressed();
+        } else if (!VideoViewManager.instance().onBackPressed()) {
+            super.onBackPressed();
+        }
     }
 
     @Override
