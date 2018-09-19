@@ -105,6 +105,15 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         });
 
         appBarLayout = findViewById(R.id.toolbar_container);
+
+        if (App.sPreferences.getBoolean("isTrances", true)) {
+            Utils.runUIThreadDelay(new Runnable() {
+                @Override
+                public void run() {
+                    App.sPreferences.edit().putBoolean("isTrances", false).apply();
+                }
+            }, 500);
+        }
     }
 
     @Override

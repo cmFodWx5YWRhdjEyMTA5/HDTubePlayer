@@ -18,12 +18,12 @@ import org.schabi.newpipe.util.Utils;
  * Created by liyanju on 2018/9/15.
  */
 
-public class LocalVideoPlayerActivity extends AppCompatActivity{
+public class DKVideoPlayerActivity extends AppCompatActivity{
 
     private IjkVideoView ijkVideoView;
 
     public static void launch(Context context, String url, String title) {
-        Intent intent = new Intent(context, LocalVideoPlayerActivity.class);
+        Intent intent = new Intent(context, DKVideoPlayerActivity.class);
         intent.putExtra("url", url);
         intent.putExtra("title", title);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+import org.schabi.newpipe.App;
 import org.schabi.newpipe.R;
 import org.schabi.newpipe.database.LocalItem;
 import org.schabi.newpipe.database.stream.StreamStatisticsEntry;
@@ -128,6 +129,15 @@ public class StatisticsPlaylistFragment
         sortButton = headerRootLayout.findViewById(R.id.sortButton);
         sortButtonIcon = headerRootLayout.findViewById(R.id.sortButtonIcon);
         sortButtonText = headerRootLayout.findViewById(R.id.sortButtonText);
+
+        if (App.isJesusMode()) {
+            headerBackgroundButton.setVisibility(View.VISIBLE);
+            headerRootLayout.findViewById(R.id.anchorLeft).setVisibility(View.VISIBLE);
+        } else {
+            headerBackgroundButton.setVisibility(View.GONE);
+            headerRootLayout.findViewById(R.id.anchorLeft).setVisibility(View.GONE);
+        }
+
         return headerRootLayout;
     }
 
@@ -304,46 +314,81 @@ public class StatisticsPlaylistFragment
         if (context == null || context.getResources() == null || getActivity() == null) return;
         final StreamInfoItem infoItem = item.toStreamInfoItem();
 
-        final String[] commands = new String[]{
-                context.getResources().getString(R.string.enqueue_on_background),
-                context.getResources().getString(R.string.enqueue_on_popup),
-                context.getResources().getString(R.string.start_here_on_main),
-                context.getResources().getString(R.string.start_here_on_background),
-                context.getResources().getString(R.string.start_here_on_popup),
-                context.getResources().getString(R.string.delete),
-                context.getResources().getString(R.string.share)
-        };
+        if (App.isJesusMode()) {
+            final String[] commands = new String[]{
+                    context.getResources().getString(R.string.enqueue_on_background),
+                    context.getResources().getString(R.string.enqueue_on_popup),
+                    context.getResources().getString(R.string.start_here_on_main),
+                    context.getResources().getString(R.string.start_here_on_background),
+                    context.getResources().getString(R.string.start_here_on_popup),
+                    context.getResources().getString(R.string.delete),
+                    context.getResources().getString(R.string.share)
+            };
 
-        final DialogInterface.OnClickListener actions = (dialogInterface, i) -> {
-            final int index = Math.max(itemListAdapter.getItemsList().indexOf(item), 0);
-            switch (i) {
-                case 0:
-                    NavigationHelper.enqueueOnBackgroundPlayer(context, new SinglePlayQueue(infoItem));
-                    break;
-                case 1:
-                    NavigationHelper.enqueueOnPopupPlayer(activity, new SinglePlayQueue(infoItem));
-                    break;
-                case 2:
-                    NavigationHelper.playOnMainPlayer(context, getPlayQueue(index));
-                    break;
-                case 3:
-                    NavigationHelper.playOnBackgroundPlayer(context, getPlayQueue(index));
-                    break;
-                case 4:
-                    NavigationHelper.playOnPopupPlayer(activity, getPlayQueue(index));
-                    break;
-                case 5:
-                    deleteEntry(index);
-                    break;
-                case 6:
-                    shareUrl(item.toStreamInfoItem().getName(), item.toStreamInfoItem().getUrl());
-                    break;
-                default:
-                    break;
-            }
-        };
+            final DialogInterface.OnClickListener actions = (dialogInterface, i) -> {
+                final int index = Math.max(itemListAdapter.getItemsList().indexOf(item), 0);
+                switch (i) {
+                    case 0:
+                        NavigationHelper.enqueueOnBackgroundPlayer(context, new SinglePlayQueue(infoItem));
+                        break;
+                    case 1:
+                        NavigationHelper.enqueueOnPopupPlayer(activity, new SinglePlayQueue(infoItem));
+                        break;
+                    case 2:
+                        NavigationHelper.playOnMainPlayer(context, getPlayQueue(index));
+                        break;
+                    case 3:
+                        NavigationHelper.playOnBackgroundPlayer(context, getPlayQueue(index));
+                        break;
+                    case 4:
+                        NavigationHelper.playOnPopupPlayer(activity, getPlayQueue(index));
+                        break;
+                    case 5:
+                        deleteEntry(index);
+                        break;
+                    case 6:
+                        shareUrl(item.toStreamInfoItem().getName(), item.toStreamInfoItem().getUrl());
+                        break;
+                    default:
+                        break;
+                }
+            };
 
-        new InfoItemDialog(getActivity(), infoItem, commands, actions).show();
+            new InfoItemDialog(getActivity(), infoItem, commands, actions).show();
+        } else {
+            final String[] commands = new String[]{
+                    context.getResources().getString(R.string.enqueue_on_popup),
+                    context.getResources().getString(R.string.start_here_on_main),
+                    context.getResources().getString(R.string.start_here_on_popup),
+                    context.getResources().getString(R.string.delete),
+                    context.getResources().getString(R.string.share)
+            };
+
+            final DialogInterface.OnClickListener actions = (dialogInterface, i) -> {
+                final int index = Math.max(itemListAdapter.getItemsList().indexOf(item), 0);
+                switch (i) {
+                    case 0:
+                        NavigationHelper.enqueueOnPopupPlayer(activity, new SinglePlayQueue(infoItem));
+                        break;
+                    case 1:
+                        NavigationHelper.playOnMainPlayer(context, getPlayQueue(index));
+                        break;
+                    case 2:
+                        NavigationHelper.playOnPopupPlayer(activity, getPlayQueue(index));
+                        break;
+                    case 3:
+                        deleteEntry(index);
+                        break;
+                    case 4:
+                        shareUrl(item.toStreamInfoItem().getName(), item.toStreamInfoItem().getUrl());
+                        break;
+                    default:
+                        break;
+                }
+            };
+
+            new InfoItemDialog(getActivity(), infoItem, commands, actions).show();
+        }
     }
 
     private void deleteEntry(final int index) {

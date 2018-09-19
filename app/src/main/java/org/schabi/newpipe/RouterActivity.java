@@ -404,30 +404,30 @@ public class RouterActivity extends AppCompatActivity {
 
     @SuppressLint("CheckResult")
     private void openDownloadDialog() {
-        ExtractorHelper.getStreamInfo(currentServiceId, currentUrl, true)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((@NonNull StreamInfo result) -> {
-                    List<VideoStream> sortedVideoStreams = ListHelper.getSortedStreamVideosList(this,
-                            result.getVideoStreams(),
-                            result.getVideoOnlyStreams(),
-                            false);
-                    int selectedVideoStreamIndex = ListHelper.getDefaultResolutionIndex(this,
-                            sortedVideoStreams);
-
-                    android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-                    DownloadDialog downloadDialog = DownloadDialog.newInstance(result);
-                    downloadDialog.setVideoStreams(sortedVideoStreams);
-                    downloadDialog.setAudioStreams(result.getAudioStreams());
-                    downloadDialog.setSelectedVideoStream(selectedVideoStreamIndex);
-                    downloadDialog.show(fm, "downloadDialog");
-                    fm.executePendingTransactions();
-                    downloadDialog.getDialog().setOnDismissListener(dialog -> {
-                        finish();
-                    });
-                }, (@NonNull Throwable throwable) -> {
-                    onError();
-                });
+//        ExtractorHelper.getStreamInfo(currentServiceId, currentUrl, true)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe((@NonNull StreamInfo result) -> {
+//                    List<VideoStream> sortedVideoStreams = ListHelper.getSortedStreamVideosList(this,
+//                            result.getVideoStreams(),
+//                            result.getVideoOnlyStreams(),
+//                            false);
+//                    int selectedVideoStreamIndex = ListHelper.getDefaultResolutionIndex(this,
+//                            sortedVideoStreams);
+//
+//                    android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+//                    DownloadDialog downloadDialog = DownloadDialog.newInstance(result);
+//                    downloadDialog.setVideoStreams(sortedVideoStreams);
+//                    downloadDialog.setAudioStreams(result.getAudioStreams());
+//                    downloadDialog.setSelectedVideoStream(selectedVideoStreamIndex);
+//                    downloadDialog.show(fm, "downloadDialog");
+//                    fm.executePendingTransactions();
+//                    downloadDialog.getDialog().setOnDismissListener(dialog -> {
+//                        finish();
+//                    });
+//                }, (@NonNull Throwable throwable) -> {
+//                    onError();
+//                });
     }
 
     @Override

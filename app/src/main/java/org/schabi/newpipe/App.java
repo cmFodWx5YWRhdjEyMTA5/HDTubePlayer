@@ -4,7 +4,9 @@ import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -13,19 +15,12 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
-
-import org.acra.ACRA;
-import org.acra.config.ACRAConfiguration;
-import org.acra.config.ACRAConfigurationException;
-import org.acra.config.ConfigurationBuilder;
-import org.acra.sender.ReportSenderFactory;
+import com.tencent.bugly.crashreport.CrashReport;
 import org.schabi.newpipe.extractor.Downloader;
 import org.schabi.newpipe.extractor.NewPipe;
-import org.schabi.newpipe.report.AcraReportSenderFactory;
-import org.schabi.newpipe.report.ErrorActivity;
-import org.schabi.newpipe.report.UserAction;
 import org.schabi.newpipe.settings.SettingsActivity;
 import org.schabi.newpipe.util.ExtractorHelper;
+import org.schabi.newpipe.util.ReferVersions;
 import org.schabi.newpipe.util.StateSaver;
 
 import java.io.IOException;
@@ -64,23 +59,23 @@ public class App extends Application {
     protected static final String TAG = App.class.toString();
     private RefWatcher refWatcher;
 
-    public static Context sConetxt;
+    public static Context sContext;
 
-    @SuppressWarnings("unchecked")
-    private static final Class<? extends ReportSenderFactory>[] reportSenderFactoryClasses = new Class[]{AcraReportSenderFactory.class};
+    public static SharedPreferences sPreferences;
 
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
+    public static boolean isGodMode() {
+        return ReferVersions.isSuper();
+    }
 
-        initACRA();
+    public static boolean isJesusMode() {
+        return ReferVersions.SuperVersionHandler.isIsBGPlayer();
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        sConetxt = this;
+        sContext = this;
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
@@ -89,12 +84,18 @@ public class App extends Application {
         }
         refWatcher = installLeakCanary();
 
+        sPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         // Initialize settings first because others inits can use its values
         SettingsActivity.initSettings(this);
+
+        CrashReport.initCrashReport(this);
 
         NewPipe.init(getDownloader());
         StateSaver.init(this);
         initNotificationChannel();
+
+        ReferVersions.initSuper();
 
         // Initialize image loader
         ImageLoader.getInstance().init(getImageLoaderConfigurations(10, 50));
@@ -173,20 +174,6 @@ public class App extends Application {
                 .diskCacheSize(diskCacheSizeMb * 1024 * 1024)
                 .imageDownloader(new ImageDownloader(getApplicationContext()))
                 .build();
-    }
-
-    private void initACRA() {
-        try {
-            final ACRAConfiguration acraConfig = new ConfigurationBuilder(this)
-                    .setReportSenderFactoryClasses(reportSenderFactoryClasses)
-                    .setBuildConfigClass(BuildConfig.class)
-                    .build();
-            ACRA.init(this, acraConfig);
-        } catch (ACRAConfigurationException ace) {
-            ace.printStackTrace();
-            ErrorActivity.reportError(this, ace, null, null, ErrorActivity.ErrorInfo.make(UserAction.SOMETHING_ELSE, "none",
-                    "Could not initialize ACRA crash report", R.string.app_ui_crash));
-        }
     }
 
     public void initNotificationChannel() {

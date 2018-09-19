@@ -24,7 +24,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.schabi.newpipe.App;
 import org.schabi.newpipe.R;
-import org.schabi.newpipe.player.LocalVideoPlayerActivity;
+import org.schabi.newpipe.player.DKVideoPlayerActivity;
 import org.schabi.newpipe.util.ImageDisplayConstants;
 import org.schabi.newpipe.util.Localization;
 
@@ -64,7 +64,7 @@ public class LocalVideoFragment extends Fragment implements LoaderManager.Loader
                 ,MediaStore.Video.Media.DISPLAY_NAME
                 ,MediaStore.Video.Media.DATA
                 ,MediaStore.Video.Media.DATE_MODIFIED};
-        return new CursorLoader(App.sConetxt, mImageUri, proj, MediaStore.Video.Media.MIME_TYPE + "=?",
+        return new CursorLoader(App.sContext, mImageUri, proj, MediaStore.Video.Media.MIME_TYPE + "=?",
                 new String[]{"video/mp4"}, MediaStore.Video.Media.DATE_MODIFIED+" desc");
     }
 
@@ -143,7 +143,7 @@ public class LocalVideoFragment extends Fragment implements LoaderManager.Loader
                 @Override
                 public void onClick(View v) {
                     LogUtil.v("localvideo", "path:: " + filePath);
-                    LocalVideoPlayerActivity.launch(App.sConetxt, path, name);
+                    DKVideoPlayerActivity.launch(App.sContext, path, name);
                 }
             });
         }

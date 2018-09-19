@@ -2,7 +2,6 @@ package org.schabi.newpipe.info_list;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,8 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dueeeke.videocontroller.StandardVideoController;
-import com.dueeeke.videoplayer.player.BaseIjkVideoView;
-import com.dueeeke.videoplayer.player.IjkVideoView;
 import com.dueeeke.videoplayer.player.PlayerConfig;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -99,7 +96,7 @@ public class HomeInfoListAdapter extends InfoListAdapter {
                 @Override
                 public String handleGetPlayUrl(boolean forceload) {
                     if (!forceload) {
-                        String playurl = ACache.get(App.sConetxt).getAsString(item.getUrl());
+                        String playurl = ACache.get(App.sContext).getAsString(item.getUrl());
                         Log.v("home", " handleGetPlayUrl playurl " + playurl);
                         if (!TextUtils.isEmpty(playurl)) {
                             return playurl;
@@ -109,7 +106,7 @@ public class HomeInfoListAdapter extends InfoListAdapter {
                     StreamMetaData streamMetaData = new ParseStreamMetaData(item.getUrl()).getStreamMetaDataList()
                             .getDesiredStream();
                     if (!TextUtils.isEmpty(streamMetaData.getUri().toString())) {
-                        ACache.get(App.sConetxt).put(item.getUrl(), streamMetaData.getUri().toString(),
+                        ACache.get(App.sContext).put(item.getUrl(), streamMetaData.getUri().toString(),
                                 60 * 5);
                     }
                     Log.v("home", " handleGetPlayUrl playurl22 " + streamMetaData.getUri().toString());
@@ -121,7 +118,7 @@ public class HomeInfoListAdapter extends InfoListAdapter {
         }
     }
 
-    private ExoMediaPlayer player = new ExoMediaPlayer(App.sConetxt);
+    private ExoMediaPlayer player = new ExoMediaPlayer(App.sContext);
 
     public class HomeStreamHolder extends RecyclerView.ViewHolder {
 

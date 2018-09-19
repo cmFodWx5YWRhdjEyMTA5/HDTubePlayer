@@ -3,7 +3,6 @@ package org.schabi.newpipe.report;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -29,8 +28,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.acra.ReportField;
-import org.acra.collector.CrashReportData;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.schabi.newpipe.ActivityCommunicator;
@@ -46,7 +43,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.Vector;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
  * Created by Christian Schabesberger on 24.10.15.
@@ -141,23 +137,6 @@ public class ErrorActivity extends AppCompatActivity {
     public static void reportError(Handler handler, final Context context, final List<Throwable> el,
                                    final Class returnActivity, final View rootView, final ErrorInfo errorInfo) {
         handler.post(() -> reportError(context, el, returnActivity, rootView, errorInfo));
-    }
-
-    public static void reportError(final Context context, final CrashReportData report, final ErrorInfo errorInfo) {
-        // get key first (don't ask about this solution)
-        ReportField key = null;
-        for (ReportField k : report.keySet()) {
-            if (k.toString().equals("STACK_TRACE")) {
-                key = k;
-            }
-        }
-        String[] el = new String[]{report.get(key).toString()};
-
-        Intent intent = new Intent(context, ErrorActivity.class);
-        intent.putExtra(ERROR_INFO, errorInfo);
-        intent.putExtra(ERROR_LIST, el);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
     }
 
     private static String getStackTrace(final Throwable throwable) {

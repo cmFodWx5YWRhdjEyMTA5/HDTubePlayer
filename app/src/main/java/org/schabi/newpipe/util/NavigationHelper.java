@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import org.schabi.newpipe.App;
 import org.schabi.newpipe.MainActivity;
 import org.schabi.newpipe.R;
 import org.schabi.newpipe.about.AboutActivity;
@@ -148,12 +149,16 @@ public class NavigationHelper {
     }
 
     public static void playOnBackgroundPlayer(final Context context, final PlayQueue queue) {
-        Toast.makeText(context, R.string.background_player_playing_toast, Toast.LENGTH_SHORT).show();
-        startService(context, getPlayerIntent(context, BackgroundPlayer.class, queue));
+        if (App.isGodMode() || App.isJesusMode()) {
+            Toast.makeText(context, R.string.background_player_playing_toast, Toast.LENGTH_SHORT).show();
+            startService(context, getPlayerIntent(context, BackgroundPlayer.class, queue));
+        }
     }
 
     public static void enqueueOnPopupPlayer(final Context context, final PlayQueue queue) {
-        enqueueOnPopupPlayer(context, queue, false);
+        if (App.isGodMode() || App.isJesusMode()) {
+            enqueueOnPopupPlayer(context, queue, false);
+        }
     }
 
     public static void enqueueOnPopupPlayer(final Context context, final PlayQueue queue, boolean selectOnAppend) {
@@ -172,9 +177,11 @@ public class NavigationHelper {
     }
 
     public static void enqueueOnBackgroundPlayer(final Context context, final PlayQueue queue, boolean selectOnAppend) {
-        Toast.makeText(context, R.string.background_player_append, Toast.LENGTH_SHORT).show();
-        startService(context,
-                getPlayerEnqueueIntent(context, BackgroundPlayer.class, queue, selectOnAppend));
+        if (App.isGodMode() || App.isJesusMode()) {
+            Toast.makeText(context, R.string.background_player_append, Toast.LENGTH_SHORT).show();
+            startService(context,
+                    getPlayerEnqueueIntent(context, BackgroundPlayer.class, queue, selectOnAppend));
+        }
     }
 
     public static void startService(@NonNull final Context context, @NonNull final Intent intent) {

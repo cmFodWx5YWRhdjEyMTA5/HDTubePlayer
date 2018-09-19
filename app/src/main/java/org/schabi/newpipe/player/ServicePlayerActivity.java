@@ -148,7 +148,10 @@ public abstract class ServicePlayerActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_play_queue, menu);
-        getMenuInflater().inflate(getPlayerOptionMenuResource(), menu);
+        int resid = getPlayerOptionMenuResource();
+        if (resid != -1) {
+            getMenuInflater().inflate(resid, menu);
+        }
         return true;
     }
 

@@ -34,7 +34,7 @@
 -keepclasseswithmembernames class * {
     @icepick.* <fields>;
 }
--keepnames class * { @icepick.State *;}
+
 
 # Rules for OkHttp. Copy paste from https://github.com/square/okhttp
 -dontwarn okhttp3.**
@@ -53,3 +53,8 @@
 -dontwarn tv.danmaku.ijk.**
 -keep class com.dueeeke.videoplayer.** { *; }
 -dontwarn com.dueeeke.videoplayer.**
+
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+
+-keeppackagenames org.jsoup.nodes

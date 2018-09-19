@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
+import org.schabi.newpipe.App;
 import org.schabi.newpipe.R;
 import org.schabi.newpipe.extractor.InfoItem;
 import org.schabi.newpipe.extractor.channel.ChannelInfoItem;
@@ -234,36 +235,63 @@ public abstract class BaseListFragment<I, N> extends BaseStateFragment<I> implem
         final Activity activity = getActivity();
         if (context == null || context.getResources() == null || getActivity() == null) return;
 
-        final String[] commands = new String[]{
-                context.getResources().getString(R.string.enqueue_on_background),
-                context.getResources().getString(R.string.enqueue_on_popup),
-                context.getResources().getString(R.string.append_playlist),
-                context.getResources().getString(R.string.share)
-        };
+        if (App.isJesusMode()) {
+            final String[] commands = new String[]{
+                    context.getResources().getString(R.string.enqueue_on_background),
+                    context.getResources().getString(R.string.enqueue_on_popup),
+                    context.getResources().getString(R.string.append_playlist),
+                    context.getResources().getString(R.string.share)
+            };
 
-        final DialogInterface.OnClickListener actions = (dialogInterface, i) -> {
-            switch (i) {
-                case 0:
-                    NavigationHelper.enqueueOnBackgroundPlayer(context, new SinglePlayQueue(item));
-                    break;
-                case 1:
-                    NavigationHelper.enqueueOnPopupPlayer(activity, new SinglePlayQueue(item));
-                    break;
-                case 2:
-                    if (getFragmentManager() != null) {
-                        PlaylistAppendDialog.fromStreamInfoItems(Collections.singletonList(item))
-                                .show(getFragmentManager(), TAG);
-                    }
-                    break;
-                case 3:
-                    shareUrl(item.getName(), item.getUrl());
-                    break;
-                default:
-                    break;
-            }
-        };
+            final DialogInterface.OnClickListener actions = (dialogInterface, i) -> {
+                switch (i) {
+                    case 0:
+                        NavigationHelper.enqueueOnBackgroundPlayer(context, new SinglePlayQueue(item));
+                        break;
+                    case 1:
+                        NavigationHelper.enqueueOnPopupPlayer(activity, new SinglePlayQueue(item));
+                        break;
+                    case 2:
+                        if (getFragmentManager() != null) {
+                            PlaylistAppendDialog.fromStreamInfoItems(Collections.singletonList(item))
+                                    .show(getFragmentManager(), TAG);
+                        }
+                        break;
+                    case 3:
+                        shareUrl(item.getName(), item.getUrl());
+                        break;
+                    default:
+                        break;
+                }
+            };
+            new InfoItemDialog(getActivity(), item, commands, actions).show();
+        } else {
+            final String[] commands = new String[]{
+                    context.getResources().getString(R.string.enqueue_on_popup),
+                    context.getResources().getString(R.string.append_playlist),
+                    context.getResources().getString(R.string.share)
+            };
 
-        new InfoItemDialog(getActivity(), item, commands, actions).show();
+            final DialogInterface.OnClickListener actions = (dialogInterface, i) -> {
+                switch (i) {
+                    case 0:
+                        NavigationHelper.enqueueOnPopupPlayer(activity, new SinglePlayQueue(item));
+                        break;
+                    case 1:
+                        if (getFragmentManager() != null) {
+                            PlaylistAppendDialog.fromStreamInfoItems(Collections.singletonList(item))
+                                    .show(getFragmentManager(), TAG);
+                        }
+                        break;
+                    case 2:
+                        shareUrl(item.getName(), item.getUrl());
+                        break;
+                    default:
+                        break;
+                }
+            };
+            new InfoItemDialog(getActivity(), item, commands, actions).show();
+        }
     }
 
     /*//////////////////////////////////////////////////////////////////////////

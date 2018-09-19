@@ -125,6 +125,13 @@ public class PlaylistFragment extends BaseListInfoFragment<PlaylistInfo> {
         headerPopupButton = headerRootLayout.findViewById(R.id.playlist_ctrl_play_popup_button);
         headerBackgroundButton = headerRootLayout.findViewById(R.id.playlist_ctrl_play_bg_button);
 
+        if (App.isJesusMode()) {
+            headerBackgroundButton.setVisibility(View.VISIBLE);
+            headerRootLayout.findViewById(R.id.anchorLeft).setVisibility(View.VISIBLE);
+        } else {
+            headerBackgroundButton.setVisibility(View.GONE);
+            headerRootLayout.findViewById(R.id.anchorLeft).setVisibility(View.GONE);
+        }
 
         return headerRootLayout;
     }
@@ -142,42 +149,73 @@ public class PlaylistFragment extends BaseListInfoFragment<PlaylistInfo> {
         final Activity activity = getActivity();
         if (context == null || context.getResources() == null || getActivity() == null) return;
 
-        final String[] commands = new String[]{
-                context.getResources().getString(R.string.enqueue_on_background),
-                context.getResources().getString(R.string.enqueue_on_popup),
-                context.getResources().getString(R.string.start_here_on_main),
-                context.getResources().getString(R.string.start_here_on_background),
-                context.getResources().getString(R.string.start_here_on_popup),
-                context.getResources().getString(R.string.share)
-        };
+        if (App.isJesusMode()) {
+            final String[] commands = new String[]{
+                    context.getResources().getString(R.string.enqueue_on_background),
+                    context.getResources().getString(R.string.enqueue_on_popup),
+                    context.getResources().getString(R.string.start_here_on_main),
+                    context.getResources().getString(R.string.start_here_on_background),
+                    context.getResources().getString(R.string.start_here_on_popup),
+                    context.getResources().getString(R.string.share)
+            };
 
-        final DialogInterface.OnClickListener actions = (dialogInterface, i) -> {
-            final int index = Math.max(infoListAdapter.getItemsList().indexOf(item), 0);
-            switch (i) {
-                case 0:
-                    NavigationHelper.enqueueOnBackgroundPlayer(context, new SinglePlayQueue(item));
-                    break;
-                case 1:
-                    NavigationHelper.enqueueOnPopupPlayer(activity, new SinglePlayQueue(item));
-                    break;
-                case 2:
-                    NavigationHelper.playOnMainPlayer(context, getPlayQueue(index));
-                    break;
-                case 3:
-                    NavigationHelper.playOnBackgroundPlayer(context, getPlayQueue(index));
-                    break;
-                case 4:
-                    NavigationHelper.playOnPopupPlayer(activity, getPlayQueue(index));
-                    break;
-                case 5:
-                    shareUrl(item.getName(), item.getUrl());
-                    break;
-                default:
-                    break;
-            }
-        };
+            final DialogInterface.OnClickListener actions = (dialogInterface, i) -> {
+                final int index = Math.max(infoListAdapter.getItemsList().indexOf(item), 0);
+                switch (i) {
+                    case 0:
+                        NavigationHelper.enqueueOnBackgroundPlayer(context, new SinglePlayQueue(item));
+                        break;
+                    case 1:
+                        NavigationHelper.enqueueOnPopupPlayer(activity, new SinglePlayQueue(item));
+                        break;
+                    case 2:
+                        NavigationHelper.playOnMainPlayer(context, getPlayQueue(index));
+                        break;
+                    case 3:
+                        NavigationHelper.playOnBackgroundPlayer(context, getPlayQueue(index));
+                        break;
+                    case 4:
+                        NavigationHelper.playOnPopupPlayer(activity, getPlayQueue(index));
+                        break;
+                    case 5:
+                        shareUrl(item.getName(), item.getUrl());
+                        break;
+                    default:
+                        break;
+                }
+            };
 
-        new InfoItemDialog(getActivity(), item, commands, actions).show();
+            new InfoItemDialog(getActivity(), item, commands, actions).show();
+        } else {
+            final String[] commands = new String[]{
+                    context.getResources().getString(R.string.enqueue_on_popup),
+                    context.getResources().getString(R.string.start_here_on_main),
+                    context.getResources().getString(R.string.start_here_on_popup),
+                    context.getResources().getString(R.string.share)
+            };
+
+            final DialogInterface.OnClickListener actions = (dialogInterface, i) -> {
+                final int index = Math.max(infoListAdapter.getItemsList().indexOf(item), 0);
+                switch (i) {
+                    case 0:
+                        NavigationHelper.enqueueOnPopupPlayer(activity, new SinglePlayQueue(item));
+                        break;
+                    case 1:
+                        NavigationHelper.playOnMainPlayer(context, getPlayQueue(index));
+                        break;
+                    case 2:
+                        NavigationHelper.playOnPopupPlayer(activity, getPlayQueue(index));
+                        break;
+                    case 3:
+                        shareUrl(item.getName(), item.getUrl());
+                        break;
+                    default:
+                        break;
+                }
+            };
+
+            new InfoItemDialog(getActivity(), item, commands, actions).show();
+        }
     }
 
     @Override

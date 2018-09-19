@@ -9,17 +9,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.dueeeke.videoplayer.player.IjkVideoView;
 import com.dueeeke.videoplayer.player.VideoViewManager;
-import com.facebook.stetho.common.LogUtil;
 
 import org.schabi.newpipe.App;
 import org.schabi.newpipe.R;
@@ -29,8 +25,6 @@ import org.schabi.newpipe.extractor.StreamingService;
 import org.schabi.newpipe.extractor.exceptions.ExtractionException;
 import org.schabi.newpipe.extractor.kiosk.KioskInfo;
 import org.schabi.newpipe.extractor.linkhandler.ListLinkHandlerFactory;
-import org.schabi.newpipe.extractor.linkhandler.ListLinkHandler;
-import org.schabi.newpipe.extractor.linkhandler.LinkHandlerFactory;
 import org.schabi.newpipe.fragments.list.BaseListInfoFragment;
 import org.schabi.newpipe.info_list.HomeInfoListAdapter;
 import org.schabi.newpipe.info_list.InfoListAdapter;
@@ -38,8 +32,6 @@ import org.schabi.newpipe.player.HomeListItemVideoView;
 import org.schabi.newpipe.report.UserAction;
 import org.schabi.newpipe.util.ExtractorHelper;
 import org.schabi.newpipe.util.KioskTranslator;
-
-import java.util.Collections;
 
 import icepick.State;
 import io.reactivex.Single;
@@ -117,7 +109,7 @@ public class KioskFragment extends BaseListInfoFragment<KioskInfo> {
         mSwipeLayout.setOnRefreshListener(() ->
                 refreshData()
         );
-        mSwipeLayout.setColorSchemeColors(ContextCompat.getColor(App.sConetxt, R.color.dark_youtube_primary_color));
+        mSwipeLayout.setColorSchemeColors(ContextCompat.getColor(App.sContext, R.color.dark_youtube_primary_color));
         itemsList.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
             @Override
             public void onChildViewAttachedToWindow(View view) {

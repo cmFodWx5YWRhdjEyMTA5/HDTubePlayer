@@ -41,7 +41,7 @@ public class StreamMetaDataList extends ArrayList<StreamMetaData> {
 
 
 	public StreamMetaDataList(int errorMessageId) {
-		this.errorMessage = App.sConetxt.getString(errorMessageId);
+		this.errorMessage = App.sContext.getString(errorMessageId);
 	}
 
 

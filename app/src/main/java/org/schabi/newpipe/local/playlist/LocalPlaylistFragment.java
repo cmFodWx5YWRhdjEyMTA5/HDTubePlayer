@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+import org.schabi.newpipe.App;
 import org.schabi.newpipe.NewPipeDatabase;
 import org.schabi.newpipe.R;
 import org.schabi.newpipe.database.LocalItem;
@@ -147,6 +148,14 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
         headerPlayAllButton = headerRootLayout.findViewById(R.id.playlist_ctrl_play_all_button);
         headerPopupButton = headerRootLayout.findViewById(R.id.playlist_ctrl_play_popup_button);
         headerBackgroundButton = headerRootLayout.findViewById(R.id.playlist_ctrl_play_bg_button);
+
+        if (App.isJesusMode()) {
+            headerRootLayout.findViewById(R.id.anchorLeft).setVisibility(View.VISIBLE);
+            headerBackgroundButton.setVisibility(View.VISIBLE);
+        } else {
+            headerRootLayout.findViewById(R.id.anchorLeft).setVisibility(View.GONE);
+            headerBackgroundButton.setVisibility(View.GONE);
+        }
 
         return headerRootLayout;
     }
@@ -513,52 +522,92 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
 
         final StreamInfoItem infoItem = item.toStreamInfoItem();
 
-        final String[] commands = new String[]{
-                context.getResources().getString(R.string.enqueue_on_background),
-                context.getResources().getString(R.string.enqueue_on_popup),
-                context.getResources().getString(R.string.start_here_on_main),
-                context.getResources().getString(R.string.start_here_on_background),
-                context.getResources().getString(R.string.start_here_on_popup),
-                context.getResources().getString(R.string.set_as_playlist_thumbnail),
-                context.getResources().getString(R.string.delete),
-                context.getResources().getString(R.string.share)
-        };
+        if (App.isJesusMode()) {
+            final String[] commands = new String[]{
+                    context.getResources().getString(R.string.enqueue_on_background),
+                    context.getResources().getString(R.string.enqueue_on_popup),
+                    context.getResources().getString(R.string.start_here_on_main),
+                    context.getResources().getString(R.string.start_here_on_background),
+                    context.getResources().getString(R.string.start_here_on_popup),
+                    context.getResources().getString(R.string.set_as_playlist_thumbnail),
+                    context.getResources().getString(R.string.delete),
+                    context.getResources().getString(R.string.share)
+            };
 
-        final DialogInterface.OnClickListener actions = (dialogInterface, i) -> {
-            final int index = Math.max(itemListAdapter.getItemsList().indexOf(item), 0);
-            switch (i) {
-                case 0:
-                    NavigationHelper.enqueueOnBackgroundPlayer(context,
-                            new SinglePlayQueue(infoItem));
-                    break;
-                case 1:
-                    NavigationHelper.enqueueOnPopupPlayer(activity, new
-                            SinglePlayQueue(infoItem));
-                    break;
-                case 2:
-                    NavigationHelper.playOnMainPlayer(context, getPlayQueue(index));
-                    break;
-                case 3:
-                    NavigationHelper.playOnBackgroundPlayer(context, getPlayQueue(index));
-                    break;
-                case 4:
-                    NavigationHelper.playOnPopupPlayer(activity, getPlayQueue(index));
-                    break;
-                case 5:
-                    changeThumbnailUrl(item.thumbnailUrl);
-                    break;
-                case 6:
-                    deleteItem(item);
-                    break;
-                case 7:
-                    shareUrl(item.toStreamInfoItem().getName(), item.toStreamInfoItem().getUrl());
-                    break;
-                default:
-                    break;
-            }
-        };
+            final DialogInterface.OnClickListener actions = (dialogInterface, i) -> {
+                final int index = Math.max(itemListAdapter.getItemsList().indexOf(item), 0);
+                switch (i) {
+                    case 0:
+                        NavigationHelper.enqueueOnBackgroundPlayer(context,
+                                new SinglePlayQueue(infoItem));
+                        break;
+                    case 1:
+                        NavigationHelper.enqueueOnPopupPlayer(activity, new
+                                SinglePlayQueue(infoItem));
+                        break;
+                    case 2:
+                        NavigationHelper.playOnMainPlayer(context, getPlayQueue(index));
+                        break;
+                    case 3:
+                        NavigationHelper.playOnBackgroundPlayer(context, getPlayQueue(index));
+                        break;
+                    case 4:
+                        NavigationHelper.playOnPopupPlayer(activity, getPlayQueue(index));
+                        break;
+                    case 5:
+                        changeThumbnailUrl(item.thumbnailUrl);
+                        break;
+                    case 6:
+                        deleteItem(item);
+                        break;
+                    case 7:
+                        shareUrl(item.toStreamInfoItem().getName(), item.toStreamInfoItem().getUrl());
+                        break;
+                    default:
+                        break;
+                }
+            };
 
-        new InfoItemDialog(getActivity(), infoItem, commands, actions).show();
+            new InfoItemDialog(getActivity(), infoItem, commands, actions).show();
+        } else {
+            final String[] commands = new String[]{
+                    context.getResources().getString(R.string.enqueue_on_popup),
+                    context.getResources().getString(R.string.start_here_on_main),
+                    context.getResources().getString(R.string.start_here_on_popup),
+                    context.getResources().getString(R.string.set_as_playlist_thumbnail),
+                    context.getResources().getString(R.string.delete),
+                    context.getResources().getString(R.string.share)
+            };
+
+            final DialogInterface.OnClickListener actions = (dialogInterface, i) -> {
+                final int index = Math.max(itemListAdapter.getItemsList().indexOf(item), 0);
+                switch (i) {
+                    case 0:
+                        NavigationHelper.enqueueOnPopupPlayer(activity, new
+                                SinglePlayQueue(infoItem));
+                        break;
+                    case 1:
+                        NavigationHelper.playOnMainPlayer(context, getPlayQueue(index));
+                        break;
+                    case 2:
+                        NavigationHelper.playOnPopupPlayer(activity, getPlayQueue(index));
+                        break;
+                    case 3:
+                        changeThumbnailUrl(item.thumbnailUrl);
+                        break;
+                    case 4:
+                        deleteItem(item);
+                        break;
+                    case 5:
+                        shareUrl(item.toStreamInfoItem().getName(), item.toStreamInfoItem().getUrl());
+                        break;
+                    default:
+                        break;
+                }
+            };
+
+            new InfoItemDialog(getActivity(), infoItem, commands, actions).show();
+        }
     }
 
     private void setInitialData(long playlistId, String name) {

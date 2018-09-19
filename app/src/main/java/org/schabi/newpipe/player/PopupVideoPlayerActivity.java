@@ -3,6 +3,7 @@ package org.schabi.newpipe.player;
 import android.content.Intent;
 import android.view.MenuItem;
 
+import org.schabi.newpipe.App;
 import org.schabi.newpipe.R;
 
 import static org.schabi.newpipe.player.PopupVideoPlayer.ACTION_CLOSE;
@@ -42,7 +43,11 @@ public final class PopupVideoPlayerActivity extends ServicePlayerActivity {
 
     @Override
     public int getPlayerOptionMenuResource() {
-        return R.menu.menu_play_queue_popup;
+        if (App.isJesusMode()) {
+            return R.menu.menu_play_queue_popup;
+        } else {
+            return -1;
+        }
     }
 
     @Override
