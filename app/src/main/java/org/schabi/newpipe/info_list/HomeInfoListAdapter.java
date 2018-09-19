@@ -92,6 +92,8 @@ public class HomeInfoListAdapter extends InfoListAdapter {
                 homeStreamHolder.controller.setDuration("");
             }
 
+            homeStreamHolder.controller.setShowLogo(true);
+
             homeStreamHolder.ijkVideoView.setPlayLogicEventCallBack(new PlayLogicEventCallBack() {
                 @Override
                 public String handleGetPlayUrl(boolean forceload) {

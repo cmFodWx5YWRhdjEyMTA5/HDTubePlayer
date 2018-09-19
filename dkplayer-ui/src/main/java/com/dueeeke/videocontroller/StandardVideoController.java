@@ -62,6 +62,7 @@ public class StandardVideoController extends GestureVideoController implements V
     private BatteryReceiver mBatteryReceiver;
     protected ImageView refresh;
     private TextView durationTV;
+    private ImageView youTubeLogoIV;
 
 
     public StandardVideoController(@NonNull Context context) {
@@ -114,6 +115,7 @@ public class StandardVideoController extends GestureVideoController implements V
         refresh = controllerView.findViewById(R.id.iv_refresh);
         refresh.setOnClickListener(this);
         durationTV = controllerView.findViewById(R.id.duration);
+        youTubeLogoIV = controllerView.findViewById(R.id.icon_logo_iv);
     }
 
     @Override
@@ -151,6 +153,12 @@ public class StandardVideoController extends GestureVideoController implements V
     public void setDuration(String duraton) {
         durationTV.setText(duraton);
         durationTV.setVisibility(View.VISIBLE);
+    }
+
+    private boolean isShowLogo = false;
+
+    public void setShowLogo(boolean isShow) {
+        isShowLogo = isShow;
     }
 
     @Override
@@ -212,7 +220,7 @@ public class StandardVideoController extends GestureVideoController implements V
                 durationTV.setVisibility(View.VISIBLE);
                 break;
             case IjkVideoView.STATE_PLAYING:
-                L.e("STATE_PLAYING");
+                L.e("STATE_PLAYING ");
                 post(mShowProgress);
                 playButton.setSelected(true);
                 loadingProgress.setVisibility(View.GONE);
@@ -220,6 +228,9 @@ public class StandardVideoController extends GestureVideoController implements V
                 thumb.setVisibility(View.GONE);
                 startPlayButton.setVisibility(View.GONE);
                 durationTV.setVisibility(View.GONE);
+                if (isShowLogo) {
+                    youTubeLogoIV.setVisibility(View.VISIBLE);
+                }
                 break;
             case IjkVideoView.STATE_PAUSED:
                 L.e("STATE_PAUSED");
@@ -391,6 +402,7 @@ public class StandardVideoController extends GestureVideoController implements V
         if (timeout != 0) {
             postDelayed(mFadeOut, timeout);
         }
+        youTubeLogoIV.setVisibility(View.GONE);
     }
 
     private void showAllViews() {

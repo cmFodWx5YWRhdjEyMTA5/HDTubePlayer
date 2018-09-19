@@ -26,7 +26,7 @@ public class AppearanceSettingsFragment extends BasePreferenceFragment {
         super.onCreate(savedInstanceState);
         String themeKey = getString(R.string.theme_key);
         startThemeKey = defaultPreferences.getString(themeKey, getString(R.string.default_theme_value));
-        findPreference(themeKey).setOnPreferenceChangeListener(themePreferenceChange);
+//        findPreference(themeKey).setOnPreferenceChangeListener(themePreferenceChange);
 
         captionSettingsKey = getString(R.string.caption_settings_key);
         if (!CAPTIONING_SETTINGS_ACCESSIBLE)  {

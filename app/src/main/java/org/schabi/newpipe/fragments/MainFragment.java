@@ -89,9 +89,9 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
         try {
             tabsList.add(KioskFragment.getInstance(0, "Trending"));
+            tabsList.add(new MyTubeFragment());
             tabsList.add(new SubscriptionFragment());
             tabsList.add(new BookmarkFragment());
-            tabsList.add(new MyTubeFragment());
         } catch (ExtractionException e) {
             e.printStackTrace();
         }

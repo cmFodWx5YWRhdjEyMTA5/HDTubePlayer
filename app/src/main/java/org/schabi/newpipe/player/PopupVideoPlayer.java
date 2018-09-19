@@ -32,6 +32,8 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -193,10 +195,13 @@ public final class PopupVideoPlayer extends Service {
     // Init
     //////////////////////////////////////////////////////////////////////////*/
 
+    private View youtubeIconView;
+
     @SuppressLint("RtlHardcoded")
     private void initPopup() {
         if (DEBUG) Log.d(TAG, "initPopup() called");
         View rootView = View.inflate(this, R.layout.player_popup, null);
+        youtubeIconView = rootView.findViewById(R.id.youtube_icon);
         playerImpl.setup(rootView);
 
         tossFlingVelocity = PlayerHelper.getTossFlingVelocity(this);
@@ -1037,8 +1042,28 @@ public final class PopupVideoPlayer extends Service {
             return false;
         }
 
+        private Rect rect = new Rect();
+
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+            if (youtubeIconView != null && playerImpl != null
+                    && youtubeIconView.getVisibility() == View.VISIBLE) {
+                youtubeIconView.getHitRect(rect);
+                if (rect.contains((int)event.getX(), (int)event.getY())) {
+                    try {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(playerImpl.getVideoUrl()));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                } else {
+                    youtubeIconView.setVisibility(View.GONE);
+                }
+            }
             popupGestureDetector.onTouchEvent(event);
             if (playerImpl == null) return false;
             if (event.getPointerCount() == 2 && !isResizing) {

@@ -271,15 +271,17 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
             findViewById(R.id.toolbar).findViewById(R.id.toolbar_search_container).setVisibility(View.GONE);
 
             MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.main_menu, menu);
+            if (App.isGodMode()) {
+                inflater.inflate(R.menu.main_menu, menu);
+            } else {
+                inflater.inflate(R.menu.main_menu2, menu);
+            }
         }
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);
         }
-
-//        updateDrawerNavigation();
 
         return true;
     }

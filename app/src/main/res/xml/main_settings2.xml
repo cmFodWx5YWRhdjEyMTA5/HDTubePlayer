@@ -9,10 +9,6 @@
         android:icon="?attr/audio"
         android:title="@string/settings_category_video_audio_title"/>
 
-    <PreferenceScreen
-        android:fragment="org.schabi.newpipe.settings.DownloadSettingsFragment"
-        android:icon="?attr/download"
-        android:title="@string/settings_category_downloads_title"/>
 
     <PreferenceScreen
         android:fragment="org.schabi.newpipe.settings.AppearanceSettingsFragment"

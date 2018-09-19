@@ -9,19 +9,20 @@
 
     <item
         android:orderInCategory="1"
+        android:id="@+id/navigation_localvideo"
+        android:icon="@drawable/ic_video_library_6060_24dp"
+        android:title="@string/video" />
+
+    <item
+        android:orderInCategory="2"
         android:id="@+id/navigation_channel"
         android:icon="@drawable/ic_channel_tv_6060_24dp"
         android:title="@string/tab_subscriptions" />
 
     <item
-        android:orderInCategory="2"
+        android:orderInCategory="3"
         android:id="@+id/navigation_bookmark"
         android:icon="@drawable/ic_subscriptions_6060_24dp"
         android:title="@string/tab_bookmarks" />
 
-    <item
-        android:orderInCategory="3"
-        android:id="@+id/navigation_localvideo"
-        android:icon="@drawable/ic_video_library_6060_24dp"
-        android:title="@string/video" />
 </menu>

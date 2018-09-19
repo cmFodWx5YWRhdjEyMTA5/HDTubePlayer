@@ -222,4 +222,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <ImageView
+        android:visibility="gone"
+        android:layout_margin="9dp"
+        android:layout_gravity="bottom|left"
+        android:id="@+id/icon_logo_iv"
+        android:src="@drawable/ic_youtube_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </FrameLayout>

@@ -20,7 +20,9 @@ import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 
+import org.schabi.newpipe.App;
 import org.schabi.newpipe.R;
+import org.schabi.newpipe.util.NavigationHelper;
 
 import java.util.ArrayList;
 
@@ -59,15 +61,22 @@ public class MyTubeFragment  extends Fragment {
                 R.drawable.ic_video_label_6060_24dp));
         tubeItems.add(new TubeItem(TubeItem.YOUTUBE_VIDEO_TYPE, getString(R.string.tube_add_youtube),
                 R.drawable.ic_library_add_6060_24dp));
+        if (App.isGodMode()) {
+            tubeItems.add(new TubeItem(TubeItem.DOWNLOAD_VIDEO_TYPE, getString(R.string.download),
+                    R.drawable.ic_file_download_black_24dp));
+        }
 
         itemTypeAdapter = new MultiItemTypeAdapter(getContext(), tubeItems);
         itemTypeAdapter.addItemViewDelegate(new LocalVideo());
-        itemTypeAdapter.addItemViewDelegate(new YouTubeVideo());
+        itemTypeAdapter.addItemViewDelegate(new TubeListItem());
+        if (App.isGodMode()) {
+            itemTypeAdapter.addItemViewDelegate(new TubeListItem());
+        }
         tubeRecyclerView.setAdapter(itemTypeAdapter);
 
     }
 
-    private class YouTubeVideo implements ItemViewDelegate<TubeItem> {
+    private class TubeListItem implements ItemViewDelegate<TubeItem> {
         @Override
         public int getItemViewLayoutId() {
             return R.layout.tube_local_video_item;
@@ -75,7 +84,8 @@ public class MyTubeFragment  extends Fragment {
 
         @Override
         public boolean isForViewType(TubeItem item, int position) {
-            return item.type == TubeItem.YOUTUBE_VIDEO_TYPE;
+            return item.type == TubeItem.YOUTUBE_VIDEO_TYPE
+                    || item.type == TubeItem.DOWNLOAD_VIDEO_TYPE;
         }
 
         @Override
@@ -92,7 +102,11 @@ public class MyTubeFragment  extends Fragment {
             holder.setOnClickListener(R.id.rl_my_music, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (tubeItem.type == TubeItem.DOWNLOAD_VIDEO_TYPE) {
+                        NavigationHelper.openDownloads(getActivity());
+                    } else if (tubeItem.type == TubeItem.YOUTUBE_VIDEO_TYPE){
 
+                    }
                 }
             });
 
@@ -143,6 +157,7 @@ public class MyTubeFragment  extends Fragment {
 
         public static final int LOCAL_VIDEO_TYPE = 1;
         public static final int YOUTUBE_VIDEO_TYPE = 2;
+        public static final int DOWNLOAD_VIDEO_TYPE = 3;
 
         public int type = LOCAL_VIDEO_TYPE;
 

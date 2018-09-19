@@ -99,6 +99,14 @@
                     tools:ignore="RtlHardcoded"
                     tools:text="12:38"
                     tools:visibility="visible"/>
+
+                <ImageView
+                    android:layout_margin="9dp"
+                    android:layout_gravity="bottom|left"
+                    android:src="@drawable/ic_youtube_watermark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
             </FrameLayout>
 
             <!-- CONTENT -->
