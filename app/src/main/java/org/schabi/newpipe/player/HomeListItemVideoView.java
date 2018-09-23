@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.dueeeke.videoplayer.player.IjkVideoView;
 import com.facebook.stetho.common.LogUtil;
+import com.squareup.haha.trove.THash;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -72,7 +73,15 @@ public class HomeListItemVideoView extends IjkVideoView{
 
                 @Override
                 protected String doInBackground(Void... voids) {
-                    return mCallBack.handleGetPlayUrl(false);
+                    try {
+                        return mCallBack.handleGetPlayUrl(false);
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                        if (!isCancelled()) {
+                            setPlayState(STATE_ERROR);
+                        }
+                    }
+                    return null;
                 }
 
                 @Override
@@ -84,6 +93,11 @@ public class HomeListItemVideoView extends IjkVideoView{
                 @Override
                 protected void onPostExecute(String url) {
                     super.onPostExecute(url);
+                    if (TextUtils.isEmpty(url)) {
+                        setPlayState(STATE_ERROR);
+                        return;
+                    }
+
                     mCurrentUrl = url;
                     Log.v("HomeListItemVideoView", "super startPrepare " + needReset);
                     HomeListItemVideoView.super.startPrepare(needReset);

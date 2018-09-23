@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -71,11 +72,13 @@ public class FeedFragment extends BaseListFragment<List<SubscriptionEntity>, Voi
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-
-        if(!useAsFrontPage) {
-            setTitle(activity.getString(R.string.fragment_whats_new));
-        }
         return inflater.inflate(R.layout.fragment_feed, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View rootView, Bundle savedInstanceState) {
+        super.onViewCreated(rootView, savedInstanceState);
+        ((Toolbar)rootView.findViewById(R.id.toolbar)).setTitle(activity.getString(R.string.fragment_whats_new));
     }
 
     @Override

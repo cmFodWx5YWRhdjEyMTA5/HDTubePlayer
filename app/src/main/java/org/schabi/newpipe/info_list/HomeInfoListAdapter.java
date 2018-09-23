@@ -14,9 +14,11 @@ import android.widget.TextView;
 
 import com.dueeeke.videocontroller.StandardVideoController;
 import com.dueeeke.videoplayer.player.PlayerConfig;
+import com.dueeeke.videoplayer.player.VideoViewManager;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.schabi.newpipe.App;
+import org.schabi.newpipe.BuildConfig;
 import org.schabi.newpipe.R;
 import org.schabi.newpipe.extractor.InfoItem;
 import org.schabi.newpipe.extractor.stream.StreamInfoItem;
@@ -99,7 +101,9 @@ public class HomeInfoListAdapter extends InfoListAdapter {
                 public String handleGetPlayUrl(boolean forceload) {
                     if (!forceload) {
                         String playurl = ACache.get(App.sContext).getAsString(item.getUrl());
-                        Log.v("home", " handleGetPlayUrl playurl " + playurl);
+                        if (BuildConfig.DEBUG) {
+                            Log.v("home", " handleGetPlayUrl playurl " + playurl);
+                        }
                         if (!TextUtils.isEmpty(playurl)) {
                             return playurl;
                         }
@@ -111,7 +115,9 @@ public class HomeInfoListAdapter extends InfoListAdapter {
                         ACache.get(App.sContext).put(item.getUrl(), streamMetaData.getUri().toString(),
                                 60 * 5);
                     }
-                    Log.v("home", " handleGetPlayUrl playurl22 " + streamMetaData.getUri().toString());
+                    if (BuildConfig.DEBUG) {
+                        Log.v("home", " handleGetPlayUrl playurl22 " + streamMetaData.getUri().toString());
+                    }
                     return streamMetaData.getUri().toString();
                 }
             });

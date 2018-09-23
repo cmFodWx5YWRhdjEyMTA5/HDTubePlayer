@@ -103,7 +103,7 @@
                 <ImageView
                     android:layout_margin="9dp"
                     android:layout_gravity="bottom|left"
-                    android:src="@drawable/ic_youtube_watermark"
+                    android:src="@drawable/ic_youtube"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 

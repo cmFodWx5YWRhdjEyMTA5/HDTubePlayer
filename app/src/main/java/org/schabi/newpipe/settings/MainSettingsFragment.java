@@ -13,9 +13,9 @@ public class MainSettingsFragment extends BasePreferenceFragment {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         if (App.isGodMode()) {
-            addPreferencesFromResource(R.xml.main_settings2);
-        } else {
             addPreferencesFromResource(R.xml.main_settings);
+        } else {
+            addPreferencesFromResource(R.xml.main_settings2);
         }
 
 //        if (!DEBUG) {
