@@ -75,7 +75,7 @@ public class YouTubeVideoActivity extends AppCompatActivity{
 
         @Override
         public void onSuccess(List<YouTubeVideo> list) {
-            LogUtil.v("video", "YouTubeVideo onSuccess ");
+            Log.v("video", "YouTubeVideo onSuccess ");
             if (list != null && list.size() > 0) {
                 if (mData.size() == 0 && list.size() == 0) {
                     emptyView.setVisibility(View.VISIBLE);
@@ -87,13 +87,18 @@ public class YouTubeVideoActivity extends AppCompatActivity{
                 commonAdapter.notifyDataSetChanged();
             }
 
-            progressBar.setVisibility(View.GONE);
+            if (mData.size() == 0) {
+                progressBar.setVisibility(View.VISIBLE);
+            } else {
+                progressBar.setVisibility(View.GONE);
+            }
 
             Utils.sSingleExecutor.execute(()->{
                 for (YouTubeVideo youTubeVideo : list) {
                     if (mDatabase.youTubeVideoDAO()
                             .getYoutubeVideoByVid(youTubeVideo.vid) == null) {
                         youTubeVideo.playlistid = playlistID;
+                        Log.v("Youtubevideo", "insert youtubevideo playlistID " + playlistID);
                         mDatabase.youTubeVideoDAO().insert(youTubeVideo);
                     }
                 }
@@ -116,16 +121,26 @@ public class YouTubeVideoActivity extends AppCompatActivity{
 
     private CommonAdapter<YouTubeVideo> getCommonAdapter(){
         commonAdapter = new CommonAdapter<YouTubeVideo>(this, R.layout.youtube_playlist_item, mData) {
+
+            @Override
+            public long getItemId(int position) {
+                return position;
+            }
+
             @Override
             protected void convert(ViewHolder holder, YouTubeVideo youTubeVideo, int position) {
+
                 holder.getView(R.id.playcount_tv).setVisibility(View.GONE);
 
                 TextView titleTV = holder.getView(R.id.itemVideoTitleView);
                 titleTV.setText(youTubeVideo.title);
 
                 ImageView thumbnailIV = holder.getView(R.id.itemThumbnailView);
-                ImageLoader.getInstance().displayImage(youTubeVideo.coverUrl,
-                        thumbnailIV, ImageDisplayConstants.DISPLAY_THUMBNAIL_OPTIONS);
+                if (thumbnailIV.getTag() == null || !thumbnailIV.getTag().equals(youTubeVideo.coverUrl)) {
+                    thumbnailIV.setTag(youTubeVideo.coverUrl);
+                    ImageLoader.getInstance().displayImage(youTubeVideo.coverUrl,
+                            thumbnailIV, ImageDisplayConstants.DISPLAY_THUMBNAIL_OPTIONS);
+                }
 
                 holder.setOnClickListener(R.id.itemRoot, new View.OnClickListener(){
                     @Override
@@ -136,6 +151,7 @@ public class YouTubeVideoActivity extends AppCompatActivity{
                 });
             }
         };
+        commonAdapter.setHasStableIds(true);
         return commonAdapter;
     }
 

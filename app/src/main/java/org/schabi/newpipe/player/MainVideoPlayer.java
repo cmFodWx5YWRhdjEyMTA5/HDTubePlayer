@@ -111,6 +111,8 @@ public final class MainVideoPlayer extends AppCompatActivity
     private boolean isInMultiWindow;
     private boolean isBackPressed;
 
+    private ImageView youtubeIconIV;
+
     /*//////////////////////////////////////////////////////////////////////////
     // Activity LifeCycle
     //////////////////////////////////////////////////////////////////////////*/
@@ -145,6 +147,8 @@ public final class MainVideoPlayer extends AppCompatActivity
             Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
             finish();
         }
+
+        youtubeIconIV = findViewById(R.id.youtube_icon_iv);
     }
 
     @Override
@@ -284,6 +288,10 @@ public final class MainVideoPlayer extends AppCompatActivity
 
         getWindow().getDecorView().setSystemUiVisibility(visibility);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        if (youtubeIconIV != null) {
+            youtubeIconIV.setVisibility(View.GONE);
+        }
     }
 
     private void hideSystemUi() {
@@ -764,6 +772,10 @@ public final class MainVideoPlayer extends AppCompatActivity
             });
 
             getRootView().setKeepScreenOn(true);
+
+            if (youtubeIconIV != null) {
+                youtubeIconIV.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override

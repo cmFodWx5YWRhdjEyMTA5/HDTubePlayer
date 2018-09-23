@@ -37,6 +37,16 @@
         android:layout_gravity="center"/>
 
     <ImageView
+        android:visibility="gone"
+        android:id="@+id/youtube_icon_iv"
+        android:layout_margin="12dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/ic_youtube_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
         android:id="@+id/endScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -251,7 +261,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_expand_more_white_24dp"
+                    android:src="@drawable/ic_expand_more_white2_24dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     tools:ignore="ContentDescription,RtlHardcoded"/>
             </RelativeLayout>

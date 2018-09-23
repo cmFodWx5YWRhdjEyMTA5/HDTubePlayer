@@ -814,6 +814,10 @@ public final class PopupVideoPlayer extends Service {
 
             startForeground(NOTIFICATION_ID, notBuilder.build());
             lockManager.acquireWifiAndCpu();
+
+            if (youtubeIconView != null) {
+                youtubeIconView.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
@@ -871,6 +875,9 @@ public final class PopupVideoPlayer extends Service {
         public void showControls(long duration) {
             videoPlayPause.setVisibility(View.VISIBLE);
             super.showControls(duration);
+            if (youtubeIconView != null) {
+                youtubeIconView.setVisibility(View.GONE);
+            }
         }
 
         public void hideControls(final long duration, long delay) {

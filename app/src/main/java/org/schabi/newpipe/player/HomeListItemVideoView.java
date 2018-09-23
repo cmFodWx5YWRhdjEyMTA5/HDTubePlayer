@@ -46,7 +46,15 @@ public class HomeListItemVideoView extends IjkVideoView{
         if (loadAsyncTask != null) {
             loadAsyncTask.cancel(true);
             loadAsyncTask = null;
+        } else {
+            setPlayState(STATE_IDLE);
         }
+    }
+
+    @Override
+    public void release() {
+        stopPlayLogicEvent();
+        super.release();
     }
 
     @Override
@@ -78,7 +86,7 @@ public class HomeListItemVideoView extends IjkVideoView{
                     } catch (Throwable e) {
                         e.printStackTrace();
                         if (!isCancelled()) {
-                            setPlayState(STATE_ERROR);
+                            cancel(true);
                         }
                     }
                     return null;

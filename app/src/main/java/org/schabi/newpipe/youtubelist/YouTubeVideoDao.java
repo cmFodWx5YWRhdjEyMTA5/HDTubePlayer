@@ -24,7 +24,7 @@ public abstract class YouTubeVideoDao {
     public abstract List<YouTubeVideo> getYoutubeVideoByid(String playlistid);
 
     @Query("select * from YouTubeVideo where vid = :vid" )
-    public abstract List<YouTubeVideo> getYoutubeVideoByVid(String vid);
+    public abstract YouTubeVideo getYoutubeVideoByVid(String vid);
 
     @Delete
     public abstract void delete(YouTubeVideo youTubeVideo);
