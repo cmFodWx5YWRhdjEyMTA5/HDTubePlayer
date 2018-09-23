@@ -305,6 +305,28 @@ public class NavigationHelper {
         openVideoDetailFragment(fragmentManager, serviceId, url, title, false);
     }
 
+    public static void openVideoDetailFragment(FragmentManager fragmentManager, String url, String title) {
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_content);
+        if (title == null) title = "";
+
+        if (fragment instanceof VideoDetailFragment && fragment.isVisible()) {
+            VideoDetailFragment detailFragment = (VideoDetailFragment) fragment;
+            detailFragment.setAutoplay(false);
+            detailFragment.setFromeSence(VideoDetailFragment.YOUTUBELIST_PAGE_SCENCE);
+            detailFragment.selectAndLoadVideo(0, url, title);
+            return;
+        }
+
+        VideoDetailFragment instance = VideoDetailFragment.getInstance(0, url, title);
+        instance.setFromeSence(VideoDetailFragment.YOUTUBELIST_PAGE_SCENCE);
+        instance.setAutoplay(false);
+
+        defaultTransaction(fragmentManager)
+                .replace(R.id.fragment_content, instance)
+                .addToBackStack(null)
+                .commitAllowingStateLoss();
+    }
+
     public static void openVideoDetailFragment(FragmentManager fragmentManager, int serviceId, String url, String title, boolean autoPlay) {
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_content);
         if (title == null) title = "";
@@ -322,7 +344,7 @@ public class NavigationHelper {
         defaultTransaction(fragmentManager)
                 .replace(R.id.fragment_content, instance)
                 .addToBackStack(null)
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     public static void openChannelFragment(
@@ -334,7 +356,7 @@ public class NavigationHelper {
         defaultTransaction(fragmentManager)
                 .replace(R.id.fragment_content, ChannelFragment.getInstance(serviceId, url, name))
                 .addToBackStack(null)
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     public static void openPlaylistFragment(FragmentManager fragmentManager,
@@ -345,35 +367,35 @@ public class NavigationHelper {
         defaultTransaction(fragmentManager)
                 .replace(R.id.fragment_content, PlaylistFragment.getInstance(serviceId, url, name))
                 .addToBackStack(null)
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     public static void openWhatsNewFragment(FragmentManager fragmentManager) {
         defaultTransaction(fragmentManager)
                 .replace(R.id.fragment_content, new FeedFragment())
                 .addToBackStack(null)
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     public static void openBookmarksFragment(FragmentManager fragmentManager) {
         defaultTransaction(fragmentManager)
                 .replace(R.id.fragment_content, new BookmarkFragment())
                 .addToBackStack(null)
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     public static void openSubscriptionFragment(FragmentManager fragmentManager) {
         defaultTransaction(fragmentManager)
                 .replace(R.id.fragment_content, new SubscriptionFragment())
                 .addToBackStack(null)
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     public static void openKioskFragment(FragmentManager fragmentManager, int serviceId, String kioskId) throws ExtractionException {
         defaultTransaction(fragmentManager)
                 .replace(R.id.fragment_holder, KioskFragment.getInstance(serviceId, kioskId))
                 .addToBackStack(null)
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     public static void openLocalPlaylistFragment(FragmentManager fragmentManager, long playlistId, String name) {
@@ -381,21 +403,21 @@ public class NavigationHelper {
         defaultTransaction(fragmentManager)
                 .replace(R.id.fragment_content, LocalPlaylistFragment.getInstance(playlistId, name))
                 .addToBackStack(null)
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     public static void openStatisticFragment(FragmentManager fragmentManager) {
         defaultTransaction(fragmentManager)
                 .replace(R.id.fragment_content, new StatisticsPlaylistFragment())
                 .addToBackStack(null)
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     public static void openSubscriptionsImportFragment(FragmentManager fragmentManager, int serviceId) {
         defaultTransaction(fragmentManager)
                 .replace(R.id.fragment_holder, SubscriptionsImportFragment.getInstance(serviceId))
                 .addToBackStack(null)
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     /*//////////////////////////////////////////////////////////////////////////

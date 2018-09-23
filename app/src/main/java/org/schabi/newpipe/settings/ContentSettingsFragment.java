@@ -83,12 +83,12 @@ public class ContentSettingsFragment extends BasePreferenceFragment {
 
         homeDir = getActivity().getApplicationInfo().dataDir;
         databasesDir = new File(homeDir + "/databases");
-        newpipe_db = new File(homeDir + "/databases/newpipe.db");
-        newpipe_db_journal = new File(homeDir + "/databases/newpipe.db-journal");
-        newpipe_db_shm = new File(homeDir + "/databases/newpipe.db-shm");
-        newpipe_db_wal = new File(homeDir + "/databases/newpipe.db-wal");
+        newpipe_db = new File(homeDir + "/databases/hdtubeplayer.db");
+        newpipe_db_journal = new File(homeDir + "/databases/hdtubeplayer.db-journal");
+        newpipe_db_shm = new File(homeDir + "/databases/hdtubeplayer.db-shm");
+        newpipe_db_wal = new File(homeDir + "/databases/hdtubeplayer.db-wal");
 
-        newpipe_settings = new File(homeDir + "/databases/newpipe.settings");
+        newpipe_settings = new File(homeDir + "/databases/hdtubeplayer.settings");
         newpipe_settings.delete();
 
         addPreferencesFromResource(R.xml.content_settings);
@@ -144,10 +144,10 @@ public class ContentSettingsFragment extends BasePreferenceFragment {
             ZipOutputStream outZip = new ZipOutputStream(
                     new BufferedOutputStream(
                             new FileOutputStream(path)));
-            ZipHelper.addFileToZip(outZip, newpipe_db.getPath(), "newpipe.db");
+            ZipHelper.addFileToZip(outZip, newpipe_db.getPath(), "hdtubeplayer.db");
 
             saveSharedPreferencesToFile(newpipe_settings);
-            ZipHelper.addFileToZip(outZip, newpipe_settings.getPath(), "newpipe.settings");
+            ZipHelper.addFileToZip(outZip, newpipe_settings.getPath(), "hdtubeplayer.settings");
 
             outZip.close();
 
@@ -202,7 +202,7 @@ public class ContentSettingsFragment extends BasePreferenceFragment {
             }
 
             final boolean isDbFileExtracted = ZipHelper.extractFileFromZip(filePath,
-                    newpipe_db.getPath(), "newpipe.db");
+                    newpipe_db.getPath(), "hdtubeplayer.db");
 
             if (isDbFileExtracted) {
                 newpipe_db_journal.delete();

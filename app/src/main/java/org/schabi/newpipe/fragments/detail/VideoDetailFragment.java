@@ -198,6 +198,14 @@ public class VideoDetailFragment
         return instance;
     }
 
+    public static final int PLAY_PAGE_SCENCE = 1;
+    public static final int YOUTUBELIST_PAGE_SCENCE = 2;
+    private int fromSence = PLAY_PAGE_SCENCE;
+
+    public void setFromeSence(int fromSence) {
+        this.fromSence = fromSence;
+    }
+
     /*//////////////////////////////////////////////////////////////////////////
     // Fragment's Lifecycle
     //////////////////////////////////////////////////////////////////////////*/
@@ -519,10 +527,19 @@ public class VideoDetailFragment
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    Router.getInstance().getReceiver(IMainActivity.class).onHomeButtonPressed();
-                } catch (Throwable e) {
-                    e.printStackTrace();
+                if (fromSence == YOUTUBELIST_PAGE_SCENCE) {
+                    try {
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .remove(VideoDetailFragment.this).commitAllowingStateLoss();
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        Router.getInstance().getReceiver(IMainActivity.class).onHomeButtonPressed();
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

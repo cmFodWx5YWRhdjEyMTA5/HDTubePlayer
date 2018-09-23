@@ -541,4 +541,17 @@
     <string name="dkplayer_wifi_tip">You are using mobile network, continue playing will consume traffic</string>
     <string name="error_video_streams">An error has occurred while retrieving video\'s streams.</string>
 
+    <string name="dialog_youtube_title">Select the playlists to import</string>
+    <string name="dialog_youtube_sub_title">%d playlist selected</string>
+    <string name="dialog_youtube_video_count">%d video</string>
+
+    <string name="select_all">Select all</string>
+
+    <string name="txt_wait">Loading...</string>
+
+
+    <string name="txt_youtube_return_empty">You have no YouTube playlist</string>
+    <string name="txt_youtube_return_net">Network error, please check your connection</string>
+    <string name="txt_youtube_return_error">Failed to get playlist, please try again</string>
+    <string name="txt_youtube_return_google">Google service unavailable</string>
 </resources>

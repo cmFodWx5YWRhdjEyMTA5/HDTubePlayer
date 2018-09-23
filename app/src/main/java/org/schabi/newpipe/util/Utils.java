@@ -3,15 +3,23 @@ package org.schabi.newpipe.util;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Point;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.view.Display;
+import android.view.WindowManager;
 
 import org.schabi.newpipe.App;
 import org.schabi.newpipe.BuildConfig;
 
 import java.io.File;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by liyanju on 2018/9/10.
@@ -22,6 +30,8 @@ public class Utils {
     private static final int INVALID_VAL = -1;
 
     private static Handler sHandler = new Handler(Looper.getMainLooper());
+
+    public static ExecutorService sSingleExecutor = Executors.newSingleThreadExecutor();
 
     public static void compat(Activity activity, int statusColor) {
         try {
@@ -34,6 +44,47 @@ public class Utils {
         } catch (Throwable e) {
             e.printStackTrace();
         }
+    }
+
+    public static int getScreenWidth() {
+        return getScreenSize().x;
+    }
+
+    public static int dip2px(float dipValue) {
+        final float scale = App.sContext.getResources()
+                .getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
+    }
+
+    public static int getScreenHeight() {
+        return getScreenSize().y;
+    }
+
+    private static Point screenSize;
+    public static synchronized Point getScreenSize() {
+        if (null == screenSize) {
+            Context context = App.sContext;
+            WindowManager wm = (WindowManager) context
+                    .getSystemService(Context.WINDOW_SERVICE);
+            screenSize = new Point();
+            Display display = wm.getDefaultDisplay();
+            if (Build.VERSION.SDK_INT > 12) {
+                display.getSize(screenSize);
+            } else {
+                screenSize.x = display.getWidth();
+                screenSize.y = display.getHeight();
+            }
+        }
+
+        return screenSize;
+    }
+
+    public static boolean isNetWorkConnected() {
+        Context context = App.sContext;
+        ConnectivityManager connMgr =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
     }
 
     public static void runUIThead(Runnable runnable) {

@@ -32,6 +32,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +43,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.dueeeke.videoplayer.player.VideoViewManager;
+import com.facebook.stetho.common.LogUtil;
 
 import org.schabi.newpipe.extractor.StreamingService;
 import org.schabi.newpipe.fragments.BackPressable;
@@ -59,6 +61,8 @@ import org.schabi.newpipe.util.ServiceHelper;
 import org.schabi.newpipe.util.StateSaver;
 import org.schabi.newpipe.util.ThemeHelper;
 import org.schabi.newpipe.util.Utils;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements IMainActivity {
     private static final String TAG = "MainActivity";
@@ -113,6 +117,29 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                     App.sPreferences.edit().putBoolean("isTrances", false).apply();
                 }
             }, 500);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.v("main", "onActivityResult>>");
+        FragmentManager fm = getSupportFragmentManager();
+        for (Fragment fragment: fm.getFragments()) {
+             handleResult(fragment, requestCode, resultCode, data);
+        }
+    }
+
+    private void handleResult(Fragment frag, int requestCode, int resultCode,
+                              Intent data) {
+        frag.onActivityResult(requestCode & 0xffff, resultCode, data);
+        List<Fragment> frags = frag.getChildFragmentManager().getFragments();
+        if (frags != null) {
+            for (Fragment f : frags) {
+                if (f != null) {
+                    handleResult(f, requestCode, resultCode, data);
+                }
+            }
         }
     }
 

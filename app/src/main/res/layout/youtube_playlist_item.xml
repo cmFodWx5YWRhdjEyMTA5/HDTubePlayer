@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rect_selector"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center"
+    android:padding="@dimen/video_item_search_padding">
+
+    <ImageView
+        android:layout_marginLeft="8dp"
+        android:layout_centerVertical="true"
+        android:id="@+id/itemThumbnailView"
+        android:layout_width="130dp"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginRight="@dimen/video_item_search_image_right_margin"
+        android:contentDescription="@string/list_thumbnail_view_description"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_dummy_thumbnail"
+        tools:ignore="RtlHardcoded"/>
+
+    <RelativeLayout
+        android:layout_weight="1"
+        android:layout_marginLeft="8dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/itemVideoTitleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@dimen/video_item_search_title_text_size"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc tristique vitae sem vitae blanditLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum"/>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/playcount_tv"
+            android:lines="1"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="@dimen/video_item_search_uploader_text_size"
+            android:layout_below="@id/itemVideoTitleView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_marginRight="3dp"
+        android:src="@drawable/ic_keyboard_arrow_right_60606_24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

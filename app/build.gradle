@@ -5,7 +5,7 @@ android {
     buildToolsVersion '27.0.3'
 
     defaultConfig {
-        applicationId "org.schabi.newpipe"
+        applicationId "melodyrun.music"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 68
@@ -16,6 +16,19 @@ android {
 
         multiDexEnabled true
     }
+
+    signingConfigs {
+        debug {
+            //   storeFile file("/Users/baidu/.android/debug.keystore")
+            // storeFile file("/Users/fanlitao/.android/debug.keystore")
+            storeFile file("debug.keystore")
+        }
+        release {
+
+
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -24,9 +37,9 @@ android {
         }
         debug {
             multiDexEnabled true
-
+            signingConfig signingConfigs.debug
             debuggable true
-            applicationIdSuffix ".debug"
+            //applicationIdSuffix ".debug"
         }
     }
 
@@ -113,4 +126,12 @@ dependencies {
 
     implementation project(':dkplayer-java')
     implementation project(':dkplayer-ui')
+
+    implementation 'com.google.android.gms:play-services-auth:10.0.1'
+    implementation('com.google.api-client:google-api-client-android:1.23.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    implementation('com.google.apis:google-api-services-youtube:v3-rev186-1.23.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
 }

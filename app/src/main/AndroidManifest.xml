@@ -113,6 +113,12 @@
             android:name="org.schabi.newpipe.player.DKVideoPlayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
+        
+        <activity android:name="org.schabi.newpipe.youtubelist.YouTubeVideoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/Translucent_theme"
+            />
 
         <activity
             android:name="org.schabi.newpipe.ExitActivity"

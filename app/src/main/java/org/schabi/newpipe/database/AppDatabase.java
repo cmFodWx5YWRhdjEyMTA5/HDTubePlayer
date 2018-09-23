@@ -20,6 +20,10 @@ import org.schabi.newpipe.database.stream.model.StreamEntity;
 import org.schabi.newpipe.database.stream.model.StreamStateEntity;
 import org.schabi.newpipe.database.subscription.SubscriptionDAO;
 import org.schabi.newpipe.database.subscription.SubscriptionEntity;
+import org.schabi.newpipe.youtubelist.YouTubePlayList;
+import org.schabi.newpipe.youtubelist.YouTubePlaylistDao;
+import org.schabi.newpipe.youtubelist.YouTubeVideo;
+import org.schabi.newpipe.youtubelist.YouTubeVideoDao;
 
 import static org.schabi.newpipe.database.Migrations.DB_VER_12_0;
 
@@ -28,14 +32,15 @@ import static org.schabi.newpipe.database.Migrations.DB_VER_12_0;
         entities = {
                 SubscriptionEntity.class, SearchHistoryEntry.class,
                 StreamEntity.class, StreamHistoryEntity.class, StreamStateEntity.class,
-                PlaylistEntity.class, PlaylistStreamEntity.class, PlaylistRemoteEntity.class
+                PlaylistEntity.class, PlaylistStreamEntity.class, PlaylistRemoteEntity.class,
+                YouTubePlayList.class, YouTubeVideo.class
         },
         version = DB_VER_12_0,
         exportSchema = false
 )
 public abstract class AppDatabase extends RoomDatabase {
 
-    public static final String DATABASE_NAME = "newpipe.db";
+    public static final String DATABASE_NAME = "hdtubeplayer.db";
 
     public abstract SubscriptionDAO subscriptionDAO();
 
@@ -52,4 +57,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract PlaylistStreamDAO playlistStreamDAO();
 
     public abstract PlaylistRemoteDAO playlistRemoteDAO();
+
+    public abstract YouTubePlaylistDao playlistYouTubeDAO();
+
+    public abstract YouTubeVideoDao youTubeVideoDAO();
 }

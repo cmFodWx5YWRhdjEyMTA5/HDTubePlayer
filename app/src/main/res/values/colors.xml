@@ -82,4 +82,12 @@
     <color name="player_theme_color_translucent">#99FFFFFF</color>
     <color name="dkplayer_theme_color">@color/dark_youtube_primary_color</color>
     <color name="dkplayer_theme_color_translucent">#99CD322E</color>
+
+
+    <color name="base_dialog_ok_button_pressed_bg_color">#33c458a4</color>
+    <color name="base_dialog_ok_button_bg_color">#00FFFFFF</color>
+
+    <color name="import_dialog_ok_button_pressed_text_color">#37BCFF</color>
+
+    <color name="import_dialog_cancel">#737373</color>
 </resources>
